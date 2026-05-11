@@ -4,11 +4,7 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
-  HeadContent,
-  Scripts,
 } from "@tanstack/react-router";
-
-import appCss from "../styles.css?url";
 
 function NotFoundComponent() {
   return (
@@ -68,53 +64,10 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
-  head: () => ({
-    meta: [
-      { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Nahui Ollin Inc." },
-      {
-        name: "description",
-        content:
-          "Fundación Nahui Ollin Inc. — acompañamos, alimentamos y brindamos esperanza a niños en situación vulnerable.",
-      },
-      { name: "author", content: "Nahui Ollin Inc." },
-      { property: "og:title", content: "Nahui Ollin Inc." },
-      {
-        property: "og:description",
-        content:
-          "Fundación Nahui Ollin Inc. — acompañamos, alimentamos y brindamos esperanza a niños en situación vulnerable.",
-      },
-      { property: "og:type", content: "website" },
-      { property: "og:image", content: "/favicon.png" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:image", content: "/favicon.png" },
-    ],
-    links: [
-      { rel: "stylesheet", href: appCss },
-      { rel: "icon", type: "image/png", href: "/favicon.png" },
-      { rel: "apple-touch-icon", href: "/favicon.png" },
-    ],
-  }),
-  shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
   errorComponent: ErrorComponent,
 });
-
-function RootShell({ children }: { children: React.ReactNode }) {
-  return (
-    <html lang="en">
-      <head>
-        <HeadContent />
-      </head>
-      <body>
-        {children}
-        <Scripts />
-      </body>
-    </html>
-  );
-}
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
