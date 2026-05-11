@@ -8,7 +8,6 @@ import { Stories } from "@/components/site/Stories";
 import { Donation } from "@/components/site/Donation";
 import { Gallery } from "@/components/site/Gallery";
 import { Volunteer } from "@/components/site/Volunteer";
-import { Contact } from "@/components/site/Contact";
 import { Footer } from "@/components/site/Footer";
 
 const orgSchema = {
@@ -60,7 +59,6 @@ function Index() {
         <Donation />
         <Gallery />
         <Volunteer />
-        <Contact />
       </main>
       <Footer />
     </>

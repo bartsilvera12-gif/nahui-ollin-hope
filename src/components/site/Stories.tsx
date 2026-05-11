@@ -1,28 +1,46 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, CalendarDays } from "lucide-react";
 import { stories } from "@/data/site";
 import { SectionTitle } from "./SectionTitle";
 
+type Phase = "antes" | "ahora";
+
 export function Stories() {
   const [activeStory, setActiveStory] = useState(0);
   const [activeImg, setActiveImg] = useState(0);
+  const [phase, setPhase] = useState<Phase>("antes");
   const story = stories[activeStory];
+
+  const hasBeforeAfter = Boolean(story.beforeImages && story.afterImages);
+
+  const activeImages = useMemo(() => {
+    if (hasBeforeAfter) {
+      return phase === "antes" ? story.beforeImages! : story.afterImages!;
+    }
+    return story.images;
+  }, [hasBeforeAfter, phase, story]);
+
+  // Reset image index when story or phase changes
+  useEffect(() => {
+    setActiveImg(0);
+  }, [activeStory, phase]);
 
   // Autoplay images
   useEffect(() => {
     const id = setInterval(() => {
-      setActiveImg((i) => (i + 1) % story.images.length);
+      setActiveImg((i) => (i + 1) % activeImages.length);
     }, 5000);
     return () => clearInterval(id);
-  }, [story.images.length]);
+  }, [activeImages.length]);
 
   const selectStory = (i: number) => {
     setActiveStory(i);
-    setActiveImg(0);
+    setPhase("antes");
   };
-  const prev = () => setActiveImg((i) => (i - 1 + story.images.length) % story.images.length);
-  const next = () => setActiveImg((i) => (i + 1) % story.images.length);
+  const prev = () =>
+    setActiveImg((i) => (i - 1 + activeImages.length) % activeImages.length);
+  const next = () => setActiveImg((i) => (i + 1) % activeImages.length);
 
   return (
     <section id="historias" className="py-20 md:py-28 bg-background">
@@ -33,7 +51,7 @@ export function Stories() {
           subtitle="Detrás de cada jornada hay momentos que nos recuerdan el poder de estar presentes."
         />
 
-        {/* Tabs */}
+        {/* Story tabs */}
         <div className="mt-10 flex flex-wrap justify-center gap-2 md:gap-3">
           {stories.map((s, i) => (
             <button
@@ -61,9 +79,9 @@ export function Stories() {
           <div className="relative order-1 lg:order-2 aspect-[4/3] lg:aspect-auto lg:min-h-[460px] bg-muted">
             <AnimatePresence mode="wait">
               <motion.img
-                key={`${activeStory}-${activeImg}`}
-                src={story.images[activeImg]}
-                alt={`${story.title} - imagen ${activeImg + 1}`}
+                key={`${activeStory}-${phase}-${activeImg}`}
+                src={activeImages[activeImg]}
+                alt={`${story.title} - ${hasBeforeAfter ? phase : "imagen"} ${activeImg + 1}`}
                 initial={{ opacity: 0, scale: 1.04 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0 }}
@@ -71,6 +89,31 @@ export function Stories() {
                 className="absolute inset-0 h-full w-full object-cover"
               />
             </AnimatePresence>
+
+            {hasBeforeAfter && (
+              <div className="absolute top-4 left-1/2 -translate-x-1/2 z-10 flex gap-1 rounded-full bg-white/85 backdrop-blur p-1 shadow-soft">
+                <button
+                  onClick={() => setPhase("antes")}
+                  className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all ${
+                    phase === "antes"
+                      ? "bg-gradient-brand text-white shadow-soft"
+                      : "text-deep-blue hover:bg-turquoise/10"
+                  }`}
+                >
+                  Antes
+                </button>
+                <button
+                  onClick={() => setPhase("ahora")}
+                  className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all ${
+                    phase === "ahora"
+                      ? "bg-gradient-brand text-white shadow-soft"
+                      : "text-deep-blue hover:bg-turquoise/10"
+                  }`}
+                >
+                  Ahora
+                </button>
+              </div>
+            )}
 
             <button
               aria-label="Imagen anterior"
@@ -88,7 +131,7 @@ export function Stories() {
             </button>
 
             <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
-              {story.images.map((_, i) => (
+              {activeImages.map((_, i) => (
                 <button
                   key={i}
                   aria-label={`Ir a imagen ${i + 1}`}
@@ -107,8 +150,12 @@ export function Stories() {
               <CalendarDays className="h-4 w-4" />
               {story.date}
             </div>
-            <h3 className="mt-3 text-2xl md:text-3xl font-bold text-foreground">{story.title}</h3>
-            <p className="mt-5 text-muted-foreground leading-relaxed">{story.description}</p>
+            <h3 className="mt-3 text-2xl md:text-3xl font-bold text-foreground">
+              {story.title}
+            </h3>
+            <p className="mt-5 text-muted-foreground leading-relaxed">
+              {story.description}
+            </p>
           </div>
         </motion.div>
       </div>

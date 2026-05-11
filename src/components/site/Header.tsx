@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Menu, X, Heart } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import logo from "@/assets/logo.jpg";
+import logo from "@/assets/logo.png";
 import { navLinks, WHATSAPP_URL } from "@/data/site";
 
 export function Header() {

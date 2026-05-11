@@ -6,7 +6,7 @@ const iconMap = { Utensils, Gift, HandHeart, Megaphone } as const;
 
 export function Volunteer() {
   return (
-    <section className="py-20 md:py-28 bg-gradient-warm">
+    <section id="voluntariado" className="py-20 md:py-28 bg-gradient-warm">
       <div className="mx-auto max-w-7xl px-4 md:px-8 grid lg:grid-cols-2 gap-12 items-center">
         <motion.div
           initial={{ opacity: 0, x: -30 }}

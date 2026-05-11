@@ -1,5 +1,5 @@
 import { Instagram, Facebook, MessageCircle } from "lucide-react";
-import logo from "@/assets/logo.jpg";
+import logo from "@/assets/logo.png";
 import { navLinks, WHATSAPP_URL } from "@/data/site";
 
 export function Footer() {

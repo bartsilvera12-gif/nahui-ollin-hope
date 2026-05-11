@@ -72,20 +72,28 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "Nahui Ollin Inc." },
+      {
+        name: "description",
+        content:
+          "Fundación Nahui Ollin Inc. — acompañamos, alimentamos y brindamos esperanza a niños en situación vulnerable.",
+      },
+      { name: "author", content: "Nahui Ollin Inc." },
+      { property: "og:title", content: "Nahui Ollin Inc." },
+      {
+        property: "og:description",
+        content:
+          "Fundación Nahui Ollin Inc. — acompañamos, alimentamos y brindamos esperanza a niños en situación vulnerable.",
+      },
       { property: "og:type", content: "website" },
+      { property: "og:image", content: "/favicon.png" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:image", content: "/favicon.png" },
     ],
     links: [
-      {
-        rel: "stylesheet",
-        href: appCss,
-      },
+      { rel: "stylesheet", href: appCss },
+      { rel: "icon", type: "image/png", href: "/favicon.png" },
+      { rel: "apple-touch-icon", href: "/favicon.png" },
     ],
   }),
   shellComponent: RootShell,

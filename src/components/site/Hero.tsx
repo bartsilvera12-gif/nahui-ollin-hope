@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
-import { Heart, ArrowRight, Users, Calendar, Sparkles } from "lucide-react";
-import logo from "@/assets/logo.jpg";
+import { Heart, ArrowRight, Users, Calendar } from "lucide-react";
+import logo from "@/assets/logo.png";
 import { FloatingDecorations } from "./FloatingDecorations";
 
 export function Hero() {
@@ -13,12 +13,6 @@ export function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
         >
-          <div className="inline-flex items-center gap-2 rounded-full bg-white/70 backdrop-blur px-4 py-1.5 mb-6 border border-turquoise/20">
-            <Sparkles className="h-4 w-4 text-turquoise" />
-            <span className="text-xs font-semibold tracking-wide text-deep-blue">
-              Fundación solidaria para la infancia
-            </span>
-          </div>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-foreground">
             Transformamos pequeños momentos en{" "}
             <span className="text-gradient-brand">grandes esperanzas</span>
@@ -52,8 +46,8 @@ export function Hero() {
         >
           <div className="relative aspect-square rounded-[2.5rem] overflow-hidden shadow-glow">
             <img
-              src="https://images.unsplash.com/photo-1602173574767-37ac01994b2a?w=1200&auto=format&fit=crop"
-              alt="Niños sonriendo durante una jornada solidaria"
+              src="/galeria/galeria-09.jpg"
+              alt="Niños vestidos de blanco acompañados por la fundación en una jornada especial"
               className="h-full w-full object-cover"
               loading="eager"
             />

@@ -40,13 +40,12 @@ export function Donation() {
             <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
           </a>
           <a
-            href="#contacto"
+            href="#voluntariado"
             className="inline-flex items-center gap-2 rounded-full bg-transparent border-2 border-white/70 px-7 py-4 text-sm font-semibold text-white hover:bg-white hover:text-deep-blue transition-all"
           >
             Quiero ser voluntario
           </a>
         </div>
-        <p className="mt-5 text-xs text-white/70">Próximamente habilitaremos más medios de donación.</p>
         <p className="mt-8 italic text-white/85 text-sm md:text-base">
           “Tu gesto puede convertirse en alimento, compañía y esperanza.”
         </p>
