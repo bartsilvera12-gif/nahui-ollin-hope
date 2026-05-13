@@ -45,7 +45,7 @@ export function About() {
               <img
                 src={crFeedinKids}
                 alt="Carmen Rosa junto a los niños en el basurero"
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover object-left"
               />
             </div>
             <div className="absolute -bottom-6 -right-6 h-32 w-32 rounded-full bg-turquoise/20 -z-10" />
