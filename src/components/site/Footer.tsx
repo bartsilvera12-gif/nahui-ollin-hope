@@ -1,6 +1,6 @@
-import { Instagram, Facebook, MessageCircle, Phone, Printer } from "lucide-react";
+import { Facebook, Phone, Printer } from "lucide-react";
 import logo from "@/assets/logo.png";
-import { WHATSAPP_URL, DONATION_URL, FACEBOOK_URL, FAX, PHONE_FREE } from "@/data/site";
+import { DONATION_URL, FACEBOOK_URL, FAX, PHONE_FREE } from "@/data/site";
 
 export function Footer() {
   return (
@@ -16,9 +16,7 @@ export function Footer() {
           </p>
           <div className="mt-5 flex gap-3">
             {[
-              { Icon: Instagram, href: "#", label: "Instagram" },
               { Icon: Facebook, href: FACEBOOK_URL, label: "Facebook" },
-              { Icon: MessageCircle, href: WHATSAPP_URL, label: "WhatsApp" },
             ].map(({ Icon, href, label }) => (
               <a
                 key={label}
