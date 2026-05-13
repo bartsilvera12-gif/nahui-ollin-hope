@@ -41,11 +41,11 @@ export function About() {
             transition={{ duration: 0.7 }}
             className="relative"
           >
-            <div className="aspect-[4/5] rounded-[2rem] overflow-hidden shadow-soft">
+            <div className="rounded-[2rem] overflow-hidden shadow-soft">
               <img
                 src={crFeedinKids}
                 alt="Carmen Rosa junto a los niños en el basurero"
-                className="h-full w-full object-cover"
+                className="w-full h-auto object-contain"
               />
             </div>
             <div className="absolute -bottom-6 -right-6 h-32 w-32 rounded-full bg-turquoise/20 -z-10" />
