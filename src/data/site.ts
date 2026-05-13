@@ -14,7 +14,7 @@ export const navLinks = [
 export const WHATSAPP_URL = "https://wa.me/595XXXXXXXXX";
 export const FACEBOOK_URL = "https://www.facebook.com/share/v/1LJBW74MXL/";
 export const FAX = "(214) 416-7771";
-export const PHONE_FREE = "+1 (833) 500-LUPE";
+export const PHONE_FREE = "+1 (833) 500";
 
 export const aboutContent = {
   quienesSomos: [
