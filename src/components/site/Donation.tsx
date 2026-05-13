@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Heart, ArrowRight } from "lucide-react";
-import { WHATSAPP_URL } from "@/data/site";
+import { DONATION_URL } from "@/data/site";
 
 export function Donation() {
   return (
@@ -31,9 +31,9 @@ export function Donation() {
 
         <div className="mt-9 flex flex-wrap justify-center gap-4">
           <a
-            href={WHATSAPP_URL}
+            href={DONATION_URL}
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
             className="group inline-flex items-center gap-2 rounded-full bg-heart px-7 py-4 text-sm font-semibold text-white shadow-glow hover:scale-105 hover:brightness-110 transition-all"
           >
             <Heart className="h-4 w-4 fill-current" /> Donar ahora

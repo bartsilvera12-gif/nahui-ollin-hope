@@ -1,6 +1,6 @@
 import { Instagram, Facebook, MessageCircle } from "lucide-react";
 import logo from "@/assets/logo.png";
-import { navLinks, WHATSAPP_URL } from "@/data/site";
+import { navLinks, WHATSAPP_URL, DONATION_URL } from "@/data/site";
 
 export function Footer() {
   return (
@@ -39,7 +39,13 @@ export function Footer() {
           <ul className="mt-4 space-y-2.5 text-sm">
             {navLinks.map((l) => (
               <li key={l.href}>
-                <a href={l.href} className="text-white/80 hover:text-turquoise transition-colors">{l.label}</a>
+                <a
+                  href={l.href}
+                  {...(l.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                  className="text-white/80 hover:text-turquoise transition-colors"
+                >
+                  {l.label}
+                </a>
               </li>
             ))}
           </ul>
@@ -51,7 +57,9 @@ export function Footer() {
             Tu aporte se transforma en alimento, compañía y esperanza para más niños.
           </p>
           <a
-            href="#donar"
+            href={DONATION_URL}
+            target="_blank"
+            rel="noopener noreferrer"
             className="mt-5 inline-flex items-center gap-2 rounded-full bg-heart px-5 py-2.5 text-sm font-semibold text-white hover:scale-105 transition-transform"
           >
             Donar ahora

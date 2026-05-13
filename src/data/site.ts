@@ -1,11 +1,14 @@
 // Static data for Nahui Ollin Inc — easy to swap for Supabase later.
 
+/** Enlace oficial de donación (Square). */
+export const DONATION_URL = "https://square.link/u/rHdd8zZz";
+
 export const navLinks = [
   { label: "Inicio", href: "#inicio" },
   { label: "Sobre", href: "#sobre" },
   { label: "Acciones", href: "#acciones" },
   { label: "Historias", href: "#historias" },
-  { label: "Donar", href: "#donar" },
+  { label: "Donar", href: DONATION_URL },
 ];
 
 export const WHATSAPP_URL = "https://wa.me/595XXXXXXXXX";

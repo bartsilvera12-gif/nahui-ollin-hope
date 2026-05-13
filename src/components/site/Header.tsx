@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Menu, X, Heart } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import logo from "@/assets/logo.png";
-import { navLinks, WHATSAPP_URL } from "@/data/site";
+import { navLinks, DONATION_URL } from "@/data/site";
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -31,14 +31,21 @@ export function Header() {
 
         <nav className="hidden lg:flex items-center gap-8">
           {navLinks.map((l) => (
-            <a key={l.href} href={l.href} className="text-sm font-medium text-foreground/80 hover:text-turquoise transition-colors">
+            <a
+              key={l.href}
+              href={l.href}
+              {...(l.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+              className="text-sm font-medium text-foreground/80 hover:text-turquoise transition-colors"
+            >
               {l.label}
             </a>
           ))}
         </nav>
 
         <a
-          href="#donar"
+          href={DONATION_URL}
+          target="_blank"
+          rel="noopener noreferrer"
           className="hidden lg:inline-flex items-center gap-2 rounded-full bg-heart px-5 py-2.5 text-sm font-semibold text-white shadow-soft hover:scale-105 hover:brightness-110 transition-all"
         >
           <Heart className="h-4 w-4 fill-current" /> Donar ahora
@@ -67,13 +74,16 @@ export function Header() {
                   key={l.href}
                   href={l.href}
                   onClick={() => setOpen(false)}
+                  {...(l.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                   className="py-3 text-base font-medium text-foreground hover:text-turquoise"
                 >
                   {l.label}
                 </a>
               ))}
               <a
-                href="#donar"
+                href={DONATION_URL}
+                target="_blank"
+                rel="noopener noreferrer"
                 onClick={() => setOpen(false)}
                 className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-heart px-5 py-3 text-sm font-semibold text-white"
               >

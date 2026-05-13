@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Heart, ArrowRight, Users, Calendar } from "lucide-react";
 import logo from "@/assets/logo.png";
+import { DONATION_URL } from "@/data/site";
 import { FloatingDecorations } from "./FloatingDecorations";
 
 export function Hero() {
@@ -23,7 +24,9 @@ export function Hero() {
           </p>
           <div className="mt-8 flex flex-wrap gap-4">
             <a
-              href="#donar"
+              href={DONATION_URL}
+              target="_blank"
+              rel="noopener noreferrer"
               className="group inline-flex items-center gap-2 rounded-full bg-heart px-6 py-3.5 text-sm font-semibold text-white shadow-soft hover:scale-105 hover:brightness-110 transition-all"
             >
               <Heart className="h-4 w-4 fill-current" /> Donar ahora
