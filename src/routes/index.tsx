@@ -36,12 +36,12 @@ function Index() {
       <main>
         <Hero />
         <About />
-        <Impact />
         <Actions />
-        <Objectives />
         <Stories />
-        <Donation />
         <Gallery />
+        <Impact />
+        <Objectives />
+        <Donation />
         <Volunteer />
       </main>
       <Footer />
