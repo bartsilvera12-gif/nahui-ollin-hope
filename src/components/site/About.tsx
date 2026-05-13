@@ -33,7 +33,7 @@ export function About() {
   return (
     <section id="sobre" className="relative py-20 md:py-28 bg-gradient-warm">
       <div className="mx-auto max-w-7xl px-4 md:px-8">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-stretch">
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -41,11 +41,11 @@ export function About() {
             transition={{ duration: 0.7 }}
             className="relative"
           >
-            <div className="rounded-[2rem] overflow-hidden shadow-soft">
+            <div className="rounded-[2rem] overflow-hidden shadow-soft h-full">
               <img
                 src={crFeedinKids}
                 alt="Carmen Rosa junto a los niños en el basurero"
-                className="w-full h-auto object-contain"
+                className="w-full h-full object-cover"
               />
             </div>
             <div className="absolute -bottom-6 -right-6 h-32 w-32 rounded-full bg-turquoise/20 -z-10" />
