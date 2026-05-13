@@ -55,16 +55,7 @@ export function Volunteer() {
             })}
           </div>
 
-          <a
-            href={WHATSAPP_URL}
-            target="_blank"
-            rel="noreferrer"
-            className="group mt-8 inline-flex items-center gap-2 rounded-full bg-heart px-6 py-3.5 text-sm font-semibold text-white shadow-soft hover:scale-105 hover:brightness-110 transition-all"
-          >
-            Quiero ayudar
-            <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-          </a>
-          <p className="mt-6 italic text-muted-foreground text-sm">
+<p className="mt-6 italic text-muted-foreground text-sm">
             “No hace falta hacer algo enorme para cambiar un día. A veces, un gesto alcanza.”
           </p>
         </motion.div>
