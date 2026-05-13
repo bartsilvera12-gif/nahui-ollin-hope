@@ -59,7 +59,7 @@ export function Footer() {
       </div>
       <div className="border-t border-white/10">
         <p className="mx-auto max-w-7xl px-4 md:px-8 py-5 text-xs text-white/60 text-center">
-          © 2026 Nahui Ollin Inc. Todos los derechos reservados.
+          Desarrollado por Neura
         </p>
       </div>
     </footer>
