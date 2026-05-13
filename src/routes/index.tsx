@@ -7,6 +7,7 @@ import { Actions } from "@/components/site/Actions";
 import { Stories } from "@/components/site/Stories";
 import { Donation } from "@/components/site/Donation";
 import { Gallery } from "@/components/site/Gallery";
+import { Objectives } from "@/components/site/Objectives";
 import { Volunteer } from "@/components/site/Volunteer";
 import { Footer } from "@/components/site/Footer";
 
@@ -37,6 +38,7 @@ function Index() {
         <About />
         <Impact />
         <Actions />
+        <Objectives />
         <Stories />
         <Donation />
         <Gallery />
