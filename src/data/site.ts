@@ -14,8 +14,14 @@ export const navLinks = [
 export const WHATSAPP_URL = "https://wa.me/595XXXXXXXXX";
 
 export const aboutContent = {
-  quienesSomos:
-    "Nahui Ollin, Inc. DBA Fundación Sueños de Barrio es una organización caritativa, sin fines de lucro, aprobada por el IRS, bajo la exención contributiva 501 C3 para salvar las vidas de niños en extrema pobreza que no tienen ni qué comer en los basureros en América.",
+  quienesSomos: [
+    "Nahui Ollin, Inc., también haciendo negocios como Fundación Sueños de Barrio, es una organización de caridad católica y de beneficencia, sin fines de lucro, reconocida por el Servicio de Impuestos Internos de los Estados Unidos (IRS) como entidad exenta de impuestos bajo la sección 501(c)(3) del Código de Rentas Internas.",
+    "Su propósito es ayudar, alimentar, apoyar, catequizar y evangelizar a niños que viven en condiciones de extrema pobreza en basureros.",
+    "Sus fundadores son la cantautora católica internacional Carmen Rosa y su amado esposo, el abogado Allan Medina.",
+    "Desde hace doce (12) años, trabajamos incansablemente al servicio de estos hermosos niños, acompañándolos en su crecimiento humano y espiritual.",
+    "Inclusive somos Padrinos de Bautismo, de Primera Comunión y de Confirmación de muchos de estos nuestros niños.",
+    "A lo largo de este tiempo, hemos sido testigos de cómo, de la mano de Dios, han crecido y logrado alcanzar sus sueños.",
+  ],
   mision:
     "Satisfacer las necesidades básicas y sanar el dolor causado por el hambre, la pobreza y el abandono de niños y/o vendedores que viven bajo la sombra de la muerte: niños abandonados que buscan de comer en los basureros y vendedores en diferentes países. Empoderarlos a través de la educación para que puedan manejar y conquistar su mundo y cumplir sus más grandes sueños. Capacitarlos para que les enseñen a otros a cambiar hacia la ruta de la productividad.",
   vision:

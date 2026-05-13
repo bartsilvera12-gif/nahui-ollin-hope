@@ -63,9 +63,13 @@ export function About() {
             <h2 className="mt-3 text-3xl md:text-4xl lg:text-5xl font-bold text-foreground">
               ¿Quiénes somos?
             </h2>
-            <p className="mt-5 text-base md:text-lg text-muted-foreground leading-relaxed">
-              {aboutContent.quienesSomos}
-            </p>
+            <div className="mt-5 space-y-3">
+              {aboutContent.quienesSomos.map((p, i) => (
+                <p key={i} className="text-base md:text-lg text-muted-foreground leading-relaxed">
+                  {p}
+                </p>
+              ))}
+            </div>
           </motion.div>
         </div>
 
