@@ -13,6 +13,7 @@ import {
   Megaphone,
 } from "lucide-react";
 import { aboutContent, objetivos, values } from "@/data/site";
+import crFeedinKids from "@/assets/cr-feedin-kids.jpg";
 
 const iconMap = {
   Heart,
@@ -42,8 +43,8 @@ export function About() {
           >
             <div className="aspect-[4/5] rounded-[2rem] overflow-hidden shadow-soft">
               <img
-                src="https://images.unsplash.com/photo-1593113598332-cd288d649433?w=1000&auto=format&fit=crop"
-                alt="Voluntarios acompañando a niños en una jornada comunitaria"
+                src={crFeedinKids}
+                alt="Carmen Rosa junto a los niños en el basurero"
                 className="h-full w-full object-cover"
               />
             </div>
