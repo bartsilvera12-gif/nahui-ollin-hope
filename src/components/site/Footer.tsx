@@ -1,12 +1,12 @@
 import { Instagram, Facebook, MessageCircle } from "lucide-react";
 import logo from "@/assets/logo.png";
-import { navLinks, WHATSAPP_URL, DONATION_URL } from "@/data/site";
+import { WHATSAPP_URL, DONATION_URL } from "@/data/site";
 
 export function Footer() {
   return (
     <footer className="bg-deep-blue text-white">
-      <div className="mx-auto max-w-7xl px-4 md:px-8 py-14 grid md:grid-cols-3 gap-10">
-        <div>
+      <div className="mx-auto max-w-7xl px-4 md:px-8 py-14 grid md:grid-cols-2 gap-10 items-center justify-items-center text-center">
+        <div className="flex flex-col items-center">
           <div className="flex items-center gap-3">
             <img src={logo} alt="Logo Nahui Ollin Inc" className="h-12 w-12 rounded-full ring-2 ring-turquoise/40" />
             <span className="font-bold text-lg">Nahui Ollin Inc</span>
@@ -34,26 +34,9 @@ export function Footer() {
           </div>
         </div>
 
-        <div>
-          <h4 className="font-semibold text-turquoise">Navegación</h4>
-          <ul className="mt-4 space-y-2.5 text-sm">
-            {navLinks.map((l) => (
-              <li key={l.href}>
-                <a
-                  href={l.href}
-                  {...(l.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                  className="text-white/80 hover:text-turquoise transition-colors"
-                >
-                  {l.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div>
+        <div className="flex flex-col items-center">
           <h4 className="font-semibold text-turquoise">Sumate</h4>
-          <p className="mt-4 text-sm text-white/80 leading-relaxed">
+          <p className="mt-4 text-sm text-white/80 leading-relaxed max-w-xs">
             Tu aporte se transforma en alimento, compañía y esperanza para más niños.
           </p>
           <a
