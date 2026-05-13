@@ -8,7 +8,7 @@ export const navLinks = [
   { label: "Sobre", href: "#sobre" },
   { label: "Acciones", href: "#acciones" },
   { label: "Historias", href: "#historias" },
-  { label: "Donar", href: DONATION_URL },
+
 ];
 
 export const WHATSAPP_URL = "https://wa.me/595XXXXXXXXX";
