@@ -42,19 +42,14 @@ export type StoryRow = {
   updated_at: string;
 };
 
-export type EvangelizationRow = {
+export type EvangelizationMediaRow = {
   id: string;
-  title: string;
-  date: string | null;
-  description: string;
-  has_before_after: boolean;
-  images: string[];
-  before_images: string[];
-  after_images: string[];
+  url: string;
+  alt: string | null;
+  media_type: "image" | "video";
   sort_order: number;
   visible: boolean;
   created_at: string;
-  updated_at: string;
 };
 
 export type ActionRow = {

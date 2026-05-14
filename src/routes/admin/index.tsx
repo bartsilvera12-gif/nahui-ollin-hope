@@ -22,7 +22,7 @@ function Dashboard() {
           sb.from("stories").select("id", { count: "exact", head: true }),
           sb.from("actions").select("id", { count: "exact", head: true }),
           sb.from("gallery_images").select("id", { count: "exact", head: true }),
-          sb.from("evangelization_cases").select("id", { count: "exact", head: true }),
+          sb.from("evangelization_media").select("id", { count: "exact", head: true }),
         ]);
         if (s.error) throw s.error;
         if (a.error) throw a.error;
@@ -54,7 +54,7 @@ function Dashboard() {
       icon: Cross,
       title: "Evangelización",
       count: counts?.evangelization,
-      desc: "Casos de acompañamiento espiritual.",
+      desc: "Galería de imágenes y videos del acompañamiento espiritual.",
     },
     {
       to: "/admin/actions",

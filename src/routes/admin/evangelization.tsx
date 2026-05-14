@@ -1,51 +1,42 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Eye, EyeOff, Pencil, Plus, Save, Trash2, Upload, X } from "lucide-react";
-import { getSupabase, uploadMedia, type EvangelizationRow } from "@/lib/supabase";
-import {
-  Button,
-  Card,
-  EmptyState,
-  Field,
-  PageHeader,
-  TextArea,
-  TextInput,
-} from "@/components/admin/ui";
+import { Eye, EyeOff, Trash2, Upload, Play, Image as ImageIcon, Video as VideoIcon } from "lucide-react";
+import { getSupabase, uploadMedia, type EvangelizationMediaRow } from "@/lib/supabase";
+import { Button, Card, EmptyState, Field, PageHeader, TextInput } from "@/components/admin/ui";
 
 export const Route = createFileRoute("/admin/evangelization")({
   component: EvangelizationAdmin,
 });
 
-type EditState = Partial<EvangelizationRow> & { _new?: boolean };
+type MediaType = "image" | "video";
 
-const emptyCase: EditState = {
-  _new: true,
-  title: "",
-  date: "",
-  description: "",
-  has_before_after: false,
-  images: [],
-  before_images: [],
-  after_images: [],
-  sort_order: 0,
-  visible: true,
-};
+function detectMediaType(file: File): MediaType {
+  return file.type.startsWith("video/") ? "video" : "image";
+}
+
+function detectMediaTypeFromUrl(url: string): MediaType {
+  return /\.(mp4|webm|ogg|mov|m4v)(\?|$)/i.test(url) ? "video" : "image";
+}
 
 function EvangelizationAdmin() {
   const sb = useMemo(() => getSupabase(), []);
-  const [rows, setRows] = useState<EvangelizationRow[]>([]);
+  const [rows, setRows] = useState<EvangelizationMediaRow[]>([]);
   const [loading, setLoading] = useState(true);
-  const [editing, setEditing] = useState<EditState | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const [manualUrl, setManualUrl] = useState("");
+  const [manualAlt, setManualAlt] = useState("");
+  const [manualType, setManualType] = useState<MediaType>("image");
+  const fileRef = useRef<HTMLInputElement>(null);
 
   const load = async () => {
     setLoading(true);
     const { data, error } = await sb
-      .from("evangelization_cases")
+      .from("evangelization_media")
       .select("*")
       .order("sort_order", { ascending: true });
     if (error) setError(error.message);
-    else setRows((data ?? []) as EvangelizationRow[]);
+    else setRows((data ?? []) as EvangelizationMediaRow[]);
     setLoading(false);
   };
 
@@ -54,61 +45,155 @@ function EvangelizationAdmin() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const save = async (item: EditState) => {
-    setError(null);
-    const payload = {
-      title: item.title?.trim() ?? "",
-      date: item.date?.trim() || null,
-      description: item.description?.trim() ?? "",
-      has_before_after: !!item.has_before_after,
-      images: item.images ?? [],
-      before_images: item.before_images ?? [],
-      after_images: item.after_images ?? [],
-      sort_order: Number(item.sort_order ?? 0),
-      visible: !!item.visible,
-    };
-    if (!payload.title || !payload.description) {
-      setError("Título y descripción son obligatorios.");
-      return;
-    }
-    const { error } = item._new
-      ? await sb.from("evangelization_cases").insert(payload)
-      : await sb.from("evangelization_cases").update(payload).eq("id", item.id!);
-    if (error) setError(error.message);
-    else {
-      setEditing(null);
-      await load();
-    }
-  };
+  const nextSortOrder = () => (rows.length ? Math.max(...rows.map((r) => r.sort_order)) + 1 : 1);
 
-  const remove = async (id: string) => {
-    if (!confirm("¿Eliminar este caso de evangelización?")) return;
-    const { error } = await sb.from("evangelization_cases").delete().eq("id", id);
-    if (error) setError(error.message);
-    else await load();
-  };
-
-  const toggleVisible = async (row: EvangelizationRow) => {
+  const insertRow = async (url: string, alt: string | null, media_type: MediaType) => {
     const { error } = await sb
-      .from("evangelization_cases")
+      .from("evangelization_media")
+      .insert({ url, alt: alt || null, media_type, sort_order: nextSortOrder(), visible: true });
+    if (error) throw error;
+  };
+
+  const handleFiles = async (files: FileList | null) => {
+    if (!files || files.length === 0) return;
+    setError(null);
+    setUploading(true);
+    try {
+      for (const file of Array.from(files)) {
+        const publicUrl = await uploadMedia(file, "evangelization");
+        await insertRow(publicUrl, file.name, detectMediaType(file));
+      }
+      await load();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Error al subir el archivo");
+    } finally {
+      setUploading(false);
+      if (fileRef.current) fileRef.current.value = "";
+    }
+  };
+
+  const addManual = async () => {
+    if (!manualUrl.trim()) return;
+    setError(null);
+    try {
+      await insertRow(manualUrl.trim(), manualAlt.trim() || null, manualType);
+      setManualUrl("");
+      setManualAlt("");
+      setManualType("image");
+      await load();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Error agregando el item");
+    }
+  };
+
+  const toggleVisible = async (row: EvangelizationMediaRow) => {
+    const { error } = await sb
+      .from("evangelization_media")
       .update({ visible: !row.visible })
       .eq("id", row.id);
     if (error) setError(error.message);
     else load();
   };
 
+  const updateSort = async (id: string, sort_order: number) => {
+    const { error } = await sb
+      .from("evangelization_media")
+      .update({ sort_order })
+      .eq("id", id);
+    if (error) setError(error.message);
+    else load();
+  };
+
+  const remove = async (id: string) => {
+    if (!confirm("¿Eliminar este item?")) return;
+    const { error } = await sb.from("evangelization_media").delete().eq("id", id);
+    if (error) setError(error.message);
+    else await load();
+  };
+
   return (
     <div>
       <PageHeader
         title="Evangelización"
-        subtitle="Casos de acompañamiento espiritual mostrados en la sección 'Caminando con Cristo'."
-        action={
-          <Button onClick={() => setEditing({ ...emptyCase })}>
-            <Plus className="h-4 w-4" />
-            Nuevo caso
-          </Button>
-        }
+        subtitle="Imágenes y videos del acompañamiento espiritual. Aparecen como galería en la página /evangelizacion."
       />
+
+      <Card className="mb-6">
+        <h2 className="text-sm font-bold text-slate-900">Subir imágenes o videos</h2>
+        <p className="mt-1 text-xs text-slate-500">
+          Podés subir varios archivos a la vez. Se guardan en el bucket <code>nahui-media</code>{" "}
+          dentro de la carpeta <code>evangelization/</code>.
+        </p>
+        <div className="mt-3 flex flex-wrap items-center gap-3">
+          <input
+            ref={fileRef}
+            type="file"
+            accept="image/*,video/*"
+            multiple
+            onChange={(e) => handleFiles(e.target.files)}
+            className="text-sm file:mr-3 file:rounded-lg file:border-0 file:bg-deep-blue file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-deep-blue/90"
+          />
+          {uploading && <span className="text-sm text-slate-500">Subiendo…</span>}
+        </div>
+
+        <div className="mt-6 border-t border-slate-200 pt-4">
+          <h3 className="text-sm font-bold text-slate-900">…o agregar por URL</h3>
+          <div className="mt-3 grid gap-3 sm:grid-cols-[1fr_1fr_220px_auto]">
+            <Field label="URL">
+              <TextInput
+                placeholder="https://… o /evangelizacion/foto.jpg"
+                value={manualUrl}
+                onChange={(e) => {
+                  const v = e.target.value;
+                  setManualUrl(v);
+                  setManualType(detectMediaTypeFromUrl(v));
+                }}
+              />
+            </Field>
+            <Field label="Descripción (alt)">
+              <TextInput
+                placeholder="Bautismo de Pedro"
+                value={manualAlt}
+                onChange={(e) => setManualAlt(e.target.value)}
+              />
+            </Field>
+            <Field label="Tipo">
+              <div className="inline-flex h-10 w-full items-center rounded-lg border border-slate-300 bg-slate-100 p-1 shadow-sm">
+                <button
+                  type="button"
+                  onClick={() => setManualType("image")}
+                  className={`flex flex-1 items-center justify-center gap-1.5 rounded-md px-3 text-xs font-semibold transition-all h-full ${
+                    manualType === "image"
+                      ? "bg-white text-deep-blue shadow-sm"
+                      : "text-slate-500 hover:text-slate-700"
+                  }`}
+                >
+                  <ImageIcon className="h-3.5 w-3.5" />
+                  Imagen
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setManualType("video")}
+                  className={`flex flex-1 items-center justify-center gap-1.5 rounded-md px-3 text-xs font-semibold transition-all h-full ${
+                    manualType === "video"
+                      ? "bg-white text-deep-blue shadow-sm"
+                      : "text-slate-500 hover:text-slate-700"
+                  }`}
+                >
+                  <VideoIcon className="h-3.5 w-3.5" />
+                  Video
+                </button>
+              </div>
+            </Field>
+            <div className="self-end">
+              <Button onClick={addManual} disabled={!manualUrl.trim()}>
+                <Upload className="h-4 w-4" />
+                Agregar
+              </Button>
+            </div>
+          </div>
+        </div>
+      </Card>
 
       {error && (
         <Card className="mb-4 border-rose-200 bg-rose-50 text-sm text-rose-700">{error}</Card>
@@ -117,268 +202,65 @@ function EvangelizationAdmin() {
       {loading ? (
         <EmptyState message="Cargando…" />
       ) : rows.length === 0 ? (
-        <EmptyState message="Todavía no hay casos. Creá el primero con el botón de arriba." />
+        <EmptyState message="Todavía no hay items. Subí el primero arriba." />
       ) : (
-        <div className="space-y-3">
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
           {rows.map((row) => (
-            <Card key={row.id} className="flex flex-wrap items-center justify-between gap-4">
-              <div className="min-w-0 flex-1">
-                <div className="flex items-center gap-2">
-                  <h3 className="truncate text-base font-bold text-slate-900">{row.title}</h3>
-                  {row.has_before_after && (
-                    <span className="rounded-full bg-turquoise/15 px-2 py-0.5 text-xs font-semibold text-turquoise">
-                      Antes / Ahora
+            <Card key={row.id} className="p-3">
+              <div className="relative aspect-square overflow-hidden rounded-lg bg-slate-100">
+                {row.media_type === "video" ? (
+                  <>
+                    <video
+                      src={row.url}
+                      muted
+                      playsInline
+                      preload="metadata"
+                      className="h-full w-full object-cover"
+                    />
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                      <div className="h-10 w-10 rounded-full bg-white/90 flex items-center justify-center shadow">
+                        <Play className="h-4 w-4 text-deep-blue fill-deep-blue ml-0.5" />
+                      </div>
+                    </div>
+                    <span className="absolute top-2 left-2 rounded bg-black/60 px-2 py-0.5 text-[10px] font-semibold uppercase text-white">
+                      Video
                     </span>
-                  )}
-                  {!row.visible && (
-                    <span className="rounded-full bg-slate-200 px-2 py-0.5 text-xs font-semibold text-slate-600">
-                      Oculto
-                    </span>
-                  )}
-                </div>
-                {row.date && <p className="mt-0.5 text-xs text-slate-500">{row.date}</p>}
-                <p className="mt-1 line-clamp-2 text-sm text-slate-600">{row.description}</p>
-                <p className="mt-2 text-xs text-slate-400">
-                  Orden {row.sort_order} ·{" "}
-                  {row.has_before_after
-                    ? `${row.before_images.length} antes · ${row.after_images.length} ahora`
-                    : `${row.images.length} imagen${row.images.length === 1 ? "" : "es"}`}
-                </p>
+                  </>
+                ) : (
+                  <img src={row.url} alt={row.alt ?? ""} className="h-full w-full object-cover" />
+                )}
+                {!row.visible && (
+                  <div className="absolute inset-0 grid place-items-center bg-slate-900/40 text-xs font-semibold text-white">
+                    Oculto
+                  </div>
+                )}
               </div>
-              <div className="flex shrink-0 items-center gap-2">
-                <Button variant="outline" onClick={() => toggleVisible(row)}>
+              <div className="mt-2 flex items-center gap-2">
+                <TextInput
+                  type="number"
+                  className="h-9 text-xs"
+                  value={row.sort_order}
+                  onChange={(e) => updateSort(row.id, Number(e.target.value))}
+                  title="Orden"
+                />
+                <Button
+                  variant="outline"
+                  onClick={() => toggleVisible(row)}
+                  title={row.visible ? "Ocultar" : "Mostrar"}
+                >
                   {row.visible ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                  {row.visible ? "Ocultar" : "Mostrar"}
                 </Button>
-                <Button variant="outline" onClick={() => setEditing({ ...row })}>
-                  <Pencil className="h-4 w-4" />
-                  Editar
-                </Button>
-                <Button variant="danger" onClick={() => remove(row.id)}>
+                <Button variant="danger" onClick={() => remove(row.id)} title="Eliminar">
                   <Trash2 className="h-4 w-4" />
                 </Button>
               </div>
+              <p className="mt-1 truncate text-[10px] text-slate-400" title={row.url}>
+                {row.url}
+              </p>
             </Card>
           ))}
         </div>
       )}
-
-      {editing && (
-        <CaseEditor
-          value={editing}
-          onChange={setEditing}
-          onClose={() => setEditing(null)}
-          onSave={() => save(editing)}
-        />
-      )}
     </div>
-  );
-}
-
-function CaseEditor({
-  value,
-  onChange,
-  onClose,
-  onSave,
-}: {
-  value: EditState;
-  onChange: (v: EditState) => void;
-  onClose: () => void;
-  onSave: () => void;
-}) {
-  return (
-    <div
-      className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-slate-900/40 px-4 py-10"
-      onClick={onClose}
-    >
-      <div
-        className="w-full max-w-2xl rounded-2xl bg-white p-6 shadow-2xl"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className="mb-4 flex items-start justify-between gap-4">
-          <h2 className="text-lg font-bold text-slate-900">
-            {value._new ? "Nuevo caso de evangelización" : "Editar caso"}
-          </h2>
-          <Button variant="ghost" onClick={onClose}>
-            <X className="h-4 w-4" />
-          </Button>
-        </div>
-
-        <div className="space-y-4">
-          <Field label="Título">
-            <TextInput
-              value={value.title ?? ""}
-              onChange={(e) => onChange({ ...value, title: e.target.value })}
-            />
-          </Field>
-          <div className="grid gap-4 sm:grid-cols-2">
-            <Field label="Fecha (texto libre)">
-              <TextInput
-                placeholder="Confirmación 2025"
-                value={value.date ?? ""}
-                onChange={(e) => onChange({ ...value, date: e.target.value })}
-              />
-            </Field>
-            <Field label="Orden">
-              <TextInput
-                type="number"
-                value={value.sort_order ?? 0}
-                onChange={(e) => onChange({ ...value, sort_order: Number(e.target.value) })}
-              />
-            </Field>
-          </div>
-          <Field label="Descripción">
-            <TextArea
-              rows={6}
-              value={value.description ?? ""}
-              onChange={(e) => onChange({ ...value, description: e.target.value })}
-            />
-          </Field>
-
-          <label className="flex items-center gap-2 text-sm text-slate-700">
-            <input
-              type="checkbox"
-              checked={!!value.has_before_after}
-              onChange={(e) => onChange({ ...value, has_before_after: e.target.checked })}
-            />
-            Este caso usa modo <strong>Antes / Ahora</strong>
-          </label>
-
-          {value.has_before_after ? (
-            <>
-              <ImageUploader
-                label="Imágenes ANTES"
-                value={value.before_images ?? []}
-                onChange={(arr) => onChange({ ...value, before_images: arr })}
-              />
-              <ImageUploader
-                label="Imágenes AHORA"
-                value={value.after_images ?? []}
-                onChange={(arr) => onChange({ ...value, after_images: arr })}
-              />
-            </>
-          ) : (
-            <ImageUploader
-              label="Imágenes del carrusel"
-              value={value.images ?? []}
-              onChange={(arr) => onChange({ ...value, images: arr })}
-            />
-          )}
-
-          <label className="flex items-center gap-2 text-sm text-slate-700">
-            <input
-              type="checkbox"
-              checked={!!value.visible}
-              onChange={(e) => onChange({ ...value, visible: e.target.checked })}
-            />
-            Visible en el sitio
-          </label>
-        </div>
-
-        <div className="mt-6 flex justify-end gap-2">
-          <Button variant="outline" onClick={onClose}>
-            Cancelar
-          </Button>
-          <Button onClick={onSave}>
-            <Save className="h-4 w-4" />
-            Guardar
-          </Button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function ImageUploader({
-  label,
-  value,
-  onChange,
-}: {
-  label: string;
-  value: string[];
-  onChange: (next: string[]) => void;
-}) {
-  const fileRef = useRef<HTMLInputElement>(null);
-  const [uploading, setUploading] = useState(false);
-  const [err, setErr] = useState<string | null>(null);
-
-  const handleFiles = async (files: FileList | null) => {
-    if (!files || files.length === 0) return;
-    setErr(null);
-    setUploading(true);
-    try {
-      const urls: string[] = [];
-      for (const file of Array.from(files)) {
-        const u = await uploadMedia(file, "evangelization");
-        urls.push(u);
-      }
-      onChange([...value, ...urls]);
-    } catch (e) {
-      setErr(e instanceof Error ? e.message : "Error al subir");
-    } finally {
-      setUploading(false);
-      if (fileRef.current) fileRef.current.value = "";
-    }
-  };
-
-  const removeAt = (i: number) => {
-    const next = value.slice();
-    next.splice(i, 1);
-    onChange(next);
-  };
-
-  return (
-    <Field label={label}>
-      <div className="space-y-2">
-        <div className="flex flex-wrap items-center gap-2">
-          <input
-            ref={fileRef}
-            type="file"
-            accept="image/*"
-            multiple
-            onChange={(e) => handleFiles(e.target.files)}
-            className="text-sm file:mr-3 file:rounded-lg file:border-0 file:bg-deep-blue file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-white hover:file:bg-deep-blue/90"
-          />
-          {uploading && (
-            <span className="inline-flex items-center gap-1 text-xs text-slate-500">
-              <Upload className="h-3 w-3 animate-pulse" /> Subiendo…
-            </span>
-          )}
-        </div>
-        {err && <p className="text-xs text-rose-600">{err}</p>}
-
-        {value.length > 0 && (
-          <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
-            {value.map((url, i) => (
-              <div key={`${url}-${i}`} className="relative aspect-square overflow-hidden rounded-lg bg-slate-100">
-                <img src={url} alt="" className="h-full w-full object-cover" />
-                <button
-                  type="button"
-                  onClick={() => removeAt(i)}
-                  className="absolute right-1 top-1 grid h-6 w-6 place-items-center rounded-full bg-rose-600 text-white shadow"
-                  aria-label="Quitar"
-                >
-                  <X className="h-3 w-3" />
-                </button>
-              </div>
-            ))}
-          </div>
-        )}
-
-        <TextArea
-          rows={Math.max(2, value.length)}
-          placeholder="También podés pegar URLs (una por línea)"
-          value={value.join("\n")}
-          onChange={(e) =>
-            onChange(
-              e.target.value
-                .split("\n")
-                .map((s) => s.trim())
-                .filter(Boolean),
-            )
-          }
-        />
-      </div>
-    </Field>
   );
 }

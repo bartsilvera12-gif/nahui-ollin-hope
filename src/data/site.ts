@@ -166,30 +166,13 @@ export const galleryImages = galleryItems
   .filter((it) => it.type === "image")
   .map((it) => it.src);
 
-export type EvangelizationCase = {
-  title: string;
-  date?: string;
-  description: string;
-  hasBeforeAfter?: boolean;
-  beforeImages?: string[];
-  afterImages?: string[];
-  images?: string[];
+export type EvangelizationMedia = {
+  type: "image" | "video";
+  src: string;
+  alt?: string;
 };
 
-export const evangelizationCases: EvangelizationCase[] = [
-  {
-    title: "La 1ra antes de Esperanza",
-    date: "Primer caso de evangelización",
-    description:
-      "Cuando lo conocimos, este pequeño vivía recogiendo comida en un basurero, descalzo y con la carita sucia. Lo acompañamos en la catequesis, lo apoyamos en su crecimiento humano y espiritual, y hoy lo vemos vestido de blanco recibiendo los sacramentos.\n\nSomos sus padrinos en su camino de fe — bautismo, primera comunión y confirmación — y testigos de cómo, de la mano de Dios, su vida fue transformándose.\n\nSon los hijos de Dios, y esta es Su Obra de Amor.",
-    hasBeforeAfter: true,
-    beforeImages: ["/evangelizacion/caso-1/antes-1.jpg"],
-    afterImages: [
-      "/evangelizacion/caso-1/ahora-1.jpg",
-      "/evangelizacion/caso-1/ahora-2.jpg",
-    ],
-  },
-];
+export const evangelizationMedia: EvangelizationMedia[] = [];
 
 export const volunteerWays = [
   { icon: "Utensils", title: "Donar alimentos" },
