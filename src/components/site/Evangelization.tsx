@@ -2,29 +2,43 @@ import { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, CalendarDays, Cross } from "lucide-react";
 import { getSupabase, supabaseConfigured, type EvangelizationRow } from "@/lib/supabase";
+import { evangelizationCases } from "@/data/site";
 import { SectionTitle } from "./SectionTitle";
+
+const staticCases: EvangelizationRow[] = evangelizationCases.map((c, i) => ({
+  id: `static-${i}`,
+  title: c.title,
+  date: c.date ?? null,
+  description: c.description,
+  has_before_after: !!c.hasBeforeAfter,
+  images: c.images ?? [],
+  before_images: c.beforeImages ?? [],
+  after_images: c.afterImages ?? [],
+  sort_order: i,
+  visible: true,
+  created_at: "",
+  updated_at: "",
+}));
 
 type Phase = "antes" | "ahora";
 
 export function Evangelization() {
-  const [cases, setCases] = useState<EvangelizationRow[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [cases, setCases] = useState<EvangelizationRow[]>(staticCases);
+  const [loading, setLoading] = useState(supabaseConfigured);
   const [activeCase, setActiveCase] = useState(0);
   const [activeImg, setActiveImg] = useState(0);
   const [phase, setPhase] = useState<Phase>("antes");
 
   useEffect(() => {
-    if (!supabaseConfigured) {
-      setLoading(false);
-      return;
-    }
+    if (!supabaseConfigured) return;
     const sb = getSupabase();
     sb.from("evangelization_cases")
       .select("*")
       .eq("visible", true)
       .order("sort_order", { ascending: true })
       .then(({ data }) => {
-        setCases((data ?? []) as EvangelizationRow[]);
+        const rows = (data ?? []) as EvangelizationRow[];
+        if (rows.length > 0) setCases(rows);
         setLoading(false);
       });
   }, []);
