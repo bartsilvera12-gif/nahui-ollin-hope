@@ -37,8 +37,8 @@ function Index() {
         <Hero />
         <About />
         <Actions />
-        <Stories />
         <Gallery />
+        <Stories />
         <Impact />
         <Objectives />
         <Donation />
