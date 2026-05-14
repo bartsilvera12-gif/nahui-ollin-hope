@@ -148,10 +148,22 @@ export const stories: Story[] = [
   },
 ];
 
-export const galleryImages = Array.from({ length: 21 }, (_, i) => {
-  const n = String(i + 1).padStart(2, "0");
-  return `/galeria/galeria-${n}.jpg`;
-});
+export type GalleryItem =
+  | { type: "image"; src: string }
+  | { type: "video"; src: string; poster?: string };
+
+export const galleryItems: GalleryItem[] = [
+  { type: "video", src: "/galeria/videos/video-01.mp4" },
+  { type: "video", src: "/galeria/videos/video-02.mp4" },
+  ...Array.from({ length: 21 }, (_, i) => {
+    const n = String(i + 1).padStart(2, "0");
+    return { type: "image" as const, src: `/galeria/galeria-${n}.jpg` };
+  }),
+];
+
+export const galleryImages = galleryItems
+  .filter((it) => it.type === "image")
+  .map((it) => it.src);
 
 export const volunteerWays = [
   { icon: "Utensils", title: "Donar alimentos" },
