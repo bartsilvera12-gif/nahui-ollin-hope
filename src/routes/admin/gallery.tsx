@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Eye, EyeOff, Trash2, Upload, Play } from "lucide-react";
+import { Eye, EyeOff, Trash2, Upload, Play, Image as ImageIcon, Video as VideoIcon } from "lucide-react";
 import { getSupabase, uploadMedia, type GalleryImageRow } from "@/lib/supabase";
 import { Button, Card, EmptyState, Field, PageHeader, TextInput } from "@/components/admin/ui";
 
@@ -155,14 +155,32 @@ function GalleryAdmin() {
               />
             </Field>
             <Field label="Tipo">
-              <select
-                value={manualType}
-                onChange={(e) => setManualType(e.target.value as MediaType)}
-                className="h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm focus:border-deep-blue focus:outline-none"
-              >
-                <option value="image">Imagen</option>
-                <option value="video">Video</option>
-              </select>
+              <div className="inline-flex h-10 w-full items-center rounded-lg border border-slate-300 bg-slate-100 p-1 shadow-sm">
+                <button
+                  type="button"
+                  onClick={() => setManualType("image")}
+                  className={`flex flex-1 items-center justify-center gap-1.5 rounded-md px-3 text-xs font-semibold transition-all h-full ${
+                    manualType === "image"
+                      ? "bg-white text-deep-blue shadow-sm"
+                      : "text-slate-500 hover:text-slate-700"
+                  }`}
+                >
+                  <ImageIcon className="h-3.5 w-3.5" />
+                  Imagen
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setManualType("video")}
+                  className={`flex flex-1 items-center justify-center gap-1.5 rounded-md px-3 text-xs font-semibold transition-all h-full ${
+                    manualType === "video"
+                      ? "bg-white text-deep-blue shadow-sm"
+                      : "text-slate-500 hover:text-slate-700"
+                  }`}
+                >
+                  <VideoIcon className="h-3.5 w-3.5" />
+                  Video
+                </button>
+              </div>
             </Field>
             <div className="self-end">
               <Button onClick={addManual} disabled={!manualUrl.trim()}>
