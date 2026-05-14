@@ -1,7 +1,7 @@
 import { createFileRoute, Link, Outlet, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import type { Session } from "@supabase/supabase-js";
-import { Images, ListChecks, LayoutDashboard, LogOut, MessageSquareHeart } from "lucide-react";
+import { Cross, Images, ListChecks, LayoutDashboard, LogOut, MessageSquareHeart } from "lucide-react";
 import { getSupabase, supabaseConfigured } from "@/lib/supabase";
 
 export const Route = createFileRoute("/admin")({
@@ -82,6 +82,7 @@ function Sidebar({ email }: { email: string }) {
   const links = [
     { to: "/admin", label: "Resumen", icon: LayoutDashboard, exact: true },
     { to: "/admin/stories", label: "Testimonios", icon: MessageSquareHeart },
+    { to: "/admin/evangelization", label: "Evangelización", icon: Cross },
     { to: "/admin/actions", label: "Acciones", icon: ListChecks },
     { to: "/admin/gallery", label: "Galería", icon: Images },
   ];

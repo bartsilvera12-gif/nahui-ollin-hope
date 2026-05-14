@@ -7,6 +7,7 @@ export const navLinks = [
   { label: "Inicio", href: "#inicio" },
   { label: "Sobre", href: "#sobre" },
   { label: "Acciones", href: "#acciones" },
+  { label: "Evangelización", href: "#evangelizacion" },
   { label: "Historias", href: "#historias" },
 
 ];

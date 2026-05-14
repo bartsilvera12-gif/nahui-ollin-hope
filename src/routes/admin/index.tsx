@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { ArrowRight, Images, ListChecks, MessageSquareHeart } from "lucide-react";
+import { ArrowRight, Cross, Images, ListChecks, MessageSquareHeart } from "lucide-react";
 import { getSupabase } from "@/lib/supabase";
 import { Card, PageHeader } from "@/components/admin/ui";
 
@@ -8,7 +8,7 @@ export const Route = createFileRoute("/admin/")({
   component: Dashboard,
 });
 
-type Counts = { stories: number; actions: number; gallery: number };
+type Counts = { stories: number; actions: number; gallery: number; evangelization: number };
 
 function Dashboard() {
   const [counts, setCounts] = useState<Counts | null>(null);
@@ -18,18 +18,21 @@ function Dashboard() {
     const sb = getSupabase();
     const fetchAll = async () => {
       try {
-        const [s, a, g] = await Promise.all([
+        const [s, a, g, e] = await Promise.all([
           sb.from("stories").select("id", { count: "exact", head: true }),
           sb.from("actions").select("id", { count: "exact", head: true }),
           sb.from("gallery_images").select("id", { count: "exact", head: true }),
+          sb.from("evangelization_cases").select("id", { count: "exact", head: true }),
         ]);
         if (s.error) throw s.error;
         if (a.error) throw a.error;
         if (g.error) throw g.error;
+        if (e.error) throw e.error;
         setCounts({
           stories: s.count ?? 0,
           actions: a.count ?? 0,
           gallery: g.count ?? 0,
+          evangelization: e.count ?? 0,
         });
       } catch (e) {
         setErr(e instanceof Error ? e.message : "Error consultando Supabase");
@@ -45,6 +48,13 @@ function Dashboard() {
       title: "Testimonios",
       count: counts?.stories,
       desc: "Historias de transformación y carrusel principal.",
+    },
+    {
+      to: "/admin/evangelization",
+      icon: Cross,
+      title: "Evangelización",
+      count: counts?.evangelization,
+      desc: "Casos de acompañamiento espiritual.",
     },
     {
       to: "/admin/actions",

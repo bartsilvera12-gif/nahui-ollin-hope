@@ -15,6 +15,7 @@ import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as AdminStoriesRouteImport } from './routes/admin/stories'
 import { Route as AdminLoginRouteImport } from './routes/admin/login'
 import { Route as AdminGalleryRouteImport } from './routes/admin/gallery'
+import { Route as AdminEvangelizationRouteImport } from './routes/admin/evangelization'
 import { Route as AdminActionsRouteImport } from './routes/admin/actions'
 
 const AdminRouteRoute = AdminRouteRouteImport.update({
@@ -47,6 +48,11 @@ const AdminGalleryRoute = AdminGalleryRouteImport.update({
   path: '/gallery',
   getParentRoute: () => AdminRouteRoute,
 } as any)
+const AdminEvangelizationRoute = AdminEvangelizationRouteImport.update({
+  id: '/evangelization',
+  path: '/evangelization',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
 const AdminActionsRoute = AdminActionsRouteImport.update({
   id: '/actions',
   path: '/actions',
@@ -57,6 +63,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteRouteWithChildren
   '/admin/actions': typeof AdminActionsRoute
+  '/admin/evangelization': typeof AdminEvangelizationRoute
   '/admin/gallery': typeof AdminGalleryRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/stories': typeof AdminStoriesRoute
@@ -65,6 +72,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin/actions': typeof AdminActionsRoute
+  '/admin/evangelization': typeof AdminEvangelizationRoute
   '/admin/gallery': typeof AdminGalleryRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/stories': typeof AdminStoriesRoute
@@ -75,6 +83,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteRouteWithChildren
   '/admin/actions': typeof AdminActionsRoute
+  '/admin/evangelization': typeof AdminEvangelizationRoute
   '/admin/gallery': typeof AdminGalleryRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/stories': typeof AdminStoriesRoute
@@ -86,6 +95,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/admin/actions'
+    | '/admin/evangelization'
     | '/admin/gallery'
     | '/admin/login'
     | '/admin/stories'
@@ -94,6 +104,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/admin/actions'
+    | '/admin/evangelization'
     | '/admin/gallery'
     | '/admin/login'
     | '/admin/stories'
@@ -103,6 +114,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/admin/actions'
+    | '/admin/evangelization'
     | '/admin/gallery'
     | '/admin/login'
     | '/admin/stories'
@@ -158,6 +170,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminGalleryRouteImport
       parentRoute: typeof AdminRouteRoute
     }
+    '/admin/evangelization': {
+      id: '/admin/evangelization'
+      path: '/evangelization'
+      fullPath: '/admin/evangelization'
+      preLoaderRoute: typeof AdminEvangelizationRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
     '/admin/actions': {
       id: '/admin/actions'
       path: '/actions'
@@ -170,6 +189,7 @@ declare module '@tanstack/react-router' {
 
 interface AdminRouteRouteChildren {
   AdminActionsRoute: typeof AdminActionsRoute
+  AdminEvangelizationRoute: typeof AdminEvangelizationRoute
   AdminGalleryRoute: typeof AdminGalleryRoute
   AdminLoginRoute: typeof AdminLoginRoute
   AdminStoriesRoute: typeof AdminStoriesRoute
@@ -178,6 +198,7 @@ interface AdminRouteRouteChildren {
 
 const AdminRouteRouteChildren: AdminRouteRouteChildren = {
   AdminActionsRoute: AdminActionsRoute,
+  AdminEvangelizationRoute: AdminEvangelizationRoute,
   AdminGalleryRoute: AdminGalleryRoute,
   AdminLoginRoute: AdminLoginRoute,
   AdminStoriesRoute: AdminStoriesRoute,

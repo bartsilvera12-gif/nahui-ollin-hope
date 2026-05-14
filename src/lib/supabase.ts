@@ -42,6 +42,21 @@ export type StoryRow = {
   updated_at: string;
 };
 
+export type EvangelizationRow = {
+  id: string;
+  title: string;
+  date: string | null;
+  description: string;
+  has_before_after: boolean;
+  images: string[];
+  before_images: string[];
+  after_images: string[];
+  sort_order: number;
+  visible: boolean;
+  created_at: string;
+  updated_at: string;
+};
+
 export type ActionRow = {
   id: string;
   icon: string;
@@ -76,7 +91,10 @@ export type ProfileRow = {
 
 export const MEDIA_BUCKET = "nahui-media";
 
-export async function uploadMedia(file: File, folder: "gallery" | "stories" | "actions" = "gallery") {
+export async function uploadMedia(
+  file: File,
+  folder: "gallery" | "stories" | "actions" | "evangelization" = "gallery",
+) {
   const supabase = getSupabase();
   const ext = file.name.split(".").pop()?.toLowerCase() || "jpg";
   const path = `${folder}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
