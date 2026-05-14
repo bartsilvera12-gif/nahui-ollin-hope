@@ -135,7 +135,7 @@ function GalleryAdmin() {
 
         <div className="mt-6 border-t border-slate-200 pt-4">
           <h3 className="text-sm font-bold text-slate-900">…o agregar por URL</h3>
-          <div className="mt-3 grid gap-3 sm:grid-cols-[1fr_1fr_140px_auto]">
+          <div className="mt-3 grid gap-3 sm:grid-cols-[1fr_1fr_220px_auto]">
             <Field label="URL">
               <TextInput
                 placeholder="/galeria/galeria-22.jpg o https://…"
