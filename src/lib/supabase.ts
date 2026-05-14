@@ -58,6 +58,7 @@ export type GalleryImageRow = {
   id: string;
   url: string;
   alt: string | null;
+  media_type: "image" | "video";
   sort_order: number;
   visible: boolean;
   created_at: string;

@@ -1,12 +1,22 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Eye, EyeOff, Trash2, Upload } from "lucide-react";
+import { Eye, EyeOff, Trash2, Upload, Play } from "lucide-react";
 import { getSupabase, uploadMedia, type GalleryImageRow } from "@/lib/supabase";
 import { Button, Card, EmptyState, Field, PageHeader, TextInput } from "@/components/admin/ui";
 
 export const Route = createFileRoute("/admin/gallery")({
   component: GalleryAdmin,
 });
+
+type MediaType = "image" | "video";
+
+function detectMediaType(file: File): MediaType {
+  return file.type.startsWith("video/") ? "video" : "image";
+}
+
+function detectMediaTypeFromUrl(url: string): MediaType {
+  return /\.(mp4|webm|ogg|mov|m4v)(\?|$)/i.test(url) ? "video" : "image";
+}
 
 function GalleryAdmin() {
   const sb = useMemo(() => getSupabase(), []);
@@ -16,6 +26,7 @@ function GalleryAdmin() {
   const [uploading, setUploading] = useState(false);
   const [manualUrl, setManualUrl] = useState("");
   const [manualAlt, setManualAlt] = useState("");
+  const [manualType, setManualType] = useState<MediaType>("image");
   const fileRef = useRef<HTMLInputElement>(null);
 
   const load = async () => {
@@ -36,10 +47,10 @@ function GalleryAdmin() {
 
   const nextSortOrder = () => (rows.length ? Math.max(...rows.map((r) => r.sort_order)) + 1 : 1);
 
-  const insertRow = async (url: string, alt: string | null) => {
+  const insertRow = async (url: string, alt: string | null, media_type: MediaType) => {
     const { error } = await sb
       .from("gallery_images")
-      .insert({ url, alt: alt || null, sort_order: nextSortOrder(), visible: true });
+      .insert({ url, alt: alt || null, media_type, sort_order: nextSortOrder(), visible: true });
     if (error) throw error;
   };
 
@@ -50,11 +61,11 @@ function GalleryAdmin() {
     try {
       for (const file of Array.from(files)) {
         const publicUrl = await uploadMedia(file, "gallery");
-        await insertRow(publicUrl, file.name);
+        await insertRow(publicUrl, file.name, detectMediaType(file));
       }
       await load();
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Error al subir las imágenes");
+      setError(e instanceof Error ? e.message : "Error al subir el archivo");
     } finally {
       setUploading(false);
       if (fileRef.current) fileRef.current.value = "";
@@ -65,12 +76,13 @@ function GalleryAdmin() {
     if (!manualUrl.trim()) return;
     setError(null);
     try {
-      await insertRow(manualUrl.trim(), manualAlt.trim() || null);
+      await insertRow(manualUrl.trim(), manualAlt.trim() || null, manualType);
       setManualUrl("");
       setManualAlt("");
+      setManualType("image");
       await load();
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Error agregando imagen");
+      setError(e instanceof Error ? e.message : "Error agregando el item");
     }
   };
 
@@ -90,7 +102,7 @@ function GalleryAdmin() {
   };
 
   const remove = async (id: string) => {
-    if (!confirm("¿Eliminar esta imagen de la galería?")) return;
+    if (!confirm("¿Eliminar este item de la galería?")) return;
     const { error } = await sb.from("gallery_images").delete().eq("id", id);
     if (error) setError(error.message);
     else await load();
@@ -100,19 +112,20 @@ function GalleryAdmin() {
     <div>
       <PageHeader
         title="Galería"
-        subtitle="Imágenes del mosaico público. Las nuevas se suben a Supabase Storage."
+        subtitle="Imágenes y videos del mosaico público. Los archivos se suben a Supabase Storage."
       />
 
       <Card className="mb-6">
-        <h2 className="text-sm font-bold text-slate-900">Subir imágenes</h2>
+        <h2 className="text-sm font-bold text-slate-900">Subir imágenes o videos</h2>
         <p className="mt-1 text-xs text-slate-500">
-          Podés subir varias a la vez. Se guardan en el bucket <code>nahui-media</code>.
+          Podés subir varios archivos a la vez. Se guardan en el bucket <code>nahui-media</code>.
+          Formatos soportados: JPG, PNG, WEBP, MP4, WEBM, MOV.
         </p>
         <div className="mt-3 flex flex-wrap items-center gap-3">
           <input
             ref={fileRef}
             type="file"
-            accept="image/*"
+            accept="image/*,video/*"
             multiple
             onChange={(e) => handleFiles(e.target.files)}
             className="text-sm file:mr-3 file:rounded-lg file:border-0 file:bg-deep-blue file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-deep-blue/90"
@@ -122,12 +135,16 @@ function GalleryAdmin() {
 
         <div className="mt-6 border-t border-slate-200 pt-4">
           <h3 className="text-sm font-bold text-slate-900">…o agregar por URL</h3>
-          <div className="mt-3 grid gap-3 sm:grid-cols-[1fr_1fr_auto]">
+          <div className="mt-3 grid gap-3 sm:grid-cols-[1fr_1fr_140px_auto]">
             <Field label="URL">
               <TextInput
                 placeholder="/galeria/galeria-22.jpg o https://…"
                 value={manualUrl}
-                onChange={(e) => setManualUrl(e.target.value)}
+                onChange={(e) => {
+                  const v = e.target.value;
+                  setManualUrl(v);
+                  setManualType(detectMediaTypeFromUrl(v));
+                }}
               />
             </Field>
             <Field label="Descripción (alt)">
@@ -136,6 +153,16 @@ function GalleryAdmin() {
                 value={manualAlt}
                 onChange={(e) => setManualAlt(e.target.value)}
               />
+            </Field>
+            <Field label="Tipo">
+              <select
+                value={manualType}
+                onChange={(e) => setManualType(e.target.value as MediaType)}
+                className="h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm focus:border-deep-blue focus:outline-none"
+              >
+                <option value="image">Imagen</option>
+                <option value="video">Video</option>
+              </select>
             </Field>
             <div className="self-end">
               <Button onClick={addManual} disabled={!manualUrl.trim()}>
@@ -154,13 +181,33 @@ function GalleryAdmin() {
       {loading ? (
         <EmptyState message="Cargando…" />
       ) : rows.length === 0 ? (
-        <EmptyState message="La galería está vacía. Subí o agregá la primera imagen." />
+        <EmptyState message="La galería está vacía. Subí o agregá el primer item." />
       ) : (
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
           {rows.map((row) => (
             <Card key={row.id} className="p-3">
               <div className="relative aspect-square overflow-hidden rounded-lg bg-slate-100">
-                <img src={row.url} alt={row.alt ?? ""} className="h-full w-full object-cover" />
+                {row.media_type === "video" ? (
+                  <>
+                    <video
+                      src={row.url}
+                      muted
+                      playsInline
+                      preload="metadata"
+                      className="h-full w-full object-cover"
+                    />
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                      <div className="h-10 w-10 rounded-full bg-white/90 flex items-center justify-center shadow">
+                        <Play className="h-4 w-4 text-deep-blue fill-deep-blue ml-0.5" />
+                      </div>
+                    </div>
+                    <span className="absolute top-2 left-2 rounded bg-black/60 px-2 py-0.5 text-[10px] font-semibold uppercase text-white">
+                      Video
+                    </span>
+                  </>
+                ) : (
+                  <img src={row.url} alt={row.alt ?? ""} className="h-full w-full object-cover" />
+                )}
                 {!row.visible && (
                   <div className="absolute inset-0 grid place-items-center bg-slate-900/40 text-xs font-semibold text-white">
                     Oculto

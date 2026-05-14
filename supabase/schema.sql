@@ -69,11 +69,17 @@ create table if not exists nahui.gallery_images (
   id uuid primary key default extensions.uuid_generate_v4(),
   url text not null,
   alt text,
+  media_type text not null default 'image' check (media_type in ('image', 'video')),
   sort_order int not null default 0,
   visible boolean not null default true,
   created_at timestamptz not null default now()
 );
+-- Para instalaciones existentes (idempotente)
+alter table nahui.gallery_images
+  add column if not exists media_type text not null default 'image'
+    check (media_type in ('image', 'video'));
 create index if not exists gallery_sort_idx on nahui.gallery_images (sort_order);
+create index if not exists gallery_media_type_idx on nahui.gallery_images (media_type);
 
 -- 4.4 Profiles (espejo de auth.users con metadata adicional)
 create table if not exists nahui.profiles (
