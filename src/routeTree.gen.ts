@@ -10,10 +10,12 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as EvangelizacionRouteImport } from './routes/evangelizacion'
+import { Route as CartasReferencialesRouteImport } from './routes/cartas-referenciales'
 import { Route as AdminRouteRouteImport } from './routes/admin/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as AdminStoriesRouteImport } from './routes/admin/stories'
+import { Route as AdminReferenceLettersRouteImport } from './routes/admin/reference-letters'
 import { Route as AdminLoginRouteImport } from './routes/admin/login'
 import { Route as AdminGalleryRouteImport } from './routes/admin/gallery'
 import { Route as AdminEvangelizationRouteImport } from './routes/admin/evangelization'
@@ -22,6 +24,11 @@ import { Route as AdminActionsRouteImport } from './routes/admin/actions'
 const EvangelizacionRoute = EvangelizacionRouteImport.update({
   id: '/evangelizacion',
   path: '/evangelizacion',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CartasReferencialesRoute = CartasReferencialesRouteImport.update({
+  id: '/cartas-referenciales',
+  path: '/cartas-referenciales',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminRouteRoute = AdminRouteRouteImport.update({
@@ -42,6 +49,11 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
 const AdminStoriesRoute = AdminStoriesRouteImport.update({
   id: '/stories',
   path: '/stories',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminReferenceLettersRoute = AdminReferenceLettersRouteImport.update({
+  id: '/reference-letters',
+  path: '/reference-letters',
   getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminLoginRoute = AdminLoginRouteImport.update({
@@ -68,21 +80,25 @@ const AdminActionsRoute = AdminActionsRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteRouteWithChildren
+  '/cartas-referenciales': typeof CartasReferencialesRoute
   '/evangelizacion': typeof EvangelizacionRoute
   '/admin/actions': typeof AdminActionsRoute
   '/admin/evangelization': typeof AdminEvangelizationRoute
   '/admin/gallery': typeof AdminGalleryRoute
   '/admin/login': typeof AdminLoginRoute
+  '/admin/reference-letters': typeof AdminReferenceLettersRoute
   '/admin/stories': typeof AdminStoriesRoute
   '/admin/': typeof AdminIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/cartas-referenciales': typeof CartasReferencialesRoute
   '/evangelizacion': typeof EvangelizacionRoute
   '/admin/actions': typeof AdminActionsRoute
   '/admin/evangelization': typeof AdminEvangelizationRoute
   '/admin/gallery': typeof AdminGalleryRoute
   '/admin/login': typeof AdminLoginRoute
+  '/admin/reference-letters': typeof AdminReferenceLettersRoute
   '/admin/stories': typeof AdminStoriesRoute
   '/admin': typeof AdminIndexRoute
 }
@@ -90,11 +106,13 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteRouteWithChildren
+  '/cartas-referenciales': typeof CartasReferencialesRoute
   '/evangelizacion': typeof EvangelizacionRoute
   '/admin/actions': typeof AdminActionsRoute
   '/admin/evangelization': typeof AdminEvangelizationRoute
   '/admin/gallery': typeof AdminGalleryRoute
   '/admin/login': typeof AdminLoginRoute
+  '/admin/reference-letters': typeof AdminReferenceLettersRoute
   '/admin/stories': typeof AdminStoriesRoute
   '/admin/': typeof AdminIndexRoute
 }
@@ -103,32 +121,38 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/admin'
+    | '/cartas-referenciales'
     | '/evangelizacion'
     | '/admin/actions'
     | '/admin/evangelization'
     | '/admin/gallery'
     | '/admin/login'
+    | '/admin/reference-letters'
     | '/admin/stories'
     | '/admin/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/cartas-referenciales'
     | '/evangelizacion'
     | '/admin/actions'
     | '/admin/evangelization'
     | '/admin/gallery'
     | '/admin/login'
+    | '/admin/reference-letters'
     | '/admin/stories'
     | '/admin'
   id:
     | '__root__'
     | '/'
     | '/admin'
+    | '/cartas-referenciales'
     | '/evangelizacion'
     | '/admin/actions'
     | '/admin/evangelization'
     | '/admin/gallery'
     | '/admin/login'
+    | '/admin/reference-letters'
     | '/admin/stories'
     | '/admin/'
   fileRoutesById: FileRoutesById
@@ -136,6 +160,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRouteRoute: typeof AdminRouteRouteWithChildren
+  CartasReferencialesRoute: typeof CartasReferencialesRoute
   EvangelizacionRoute: typeof EvangelizacionRoute
 }
 
@@ -146,6 +171,13 @@ declare module '@tanstack/react-router' {
       path: '/evangelizacion'
       fullPath: '/evangelizacion'
       preLoaderRoute: typeof EvangelizacionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cartas-referenciales': {
+      id: '/cartas-referenciales'
+      path: '/cartas-referenciales'
+      fullPath: '/cartas-referenciales'
+      preLoaderRoute: typeof CartasReferencialesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin': {
@@ -174,6 +206,13 @@ declare module '@tanstack/react-router' {
       path: '/stories'
       fullPath: '/admin/stories'
       preLoaderRoute: typeof AdminStoriesRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/reference-letters': {
+      id: '/admin/reference-letters'
+      path: '/reference-letters'
+      fullPath: '/admin/reference-letters'
+      preLoaderRoute: typeof AdminReferenceLettersRouteImport
       parentRoute: typeof AdminRouteRoute
     }
     '/admin/login': {
@@ -212,6 +251,7 @@ interface AdminRouteRouteChildren {
   AdminEvangelizationRoute: typeof AdminEvangelizationRoute
   AdminGalleryRoute: typeof AdminGalleryRoute
   AdminLoginRoute: typeof AdminLoginRoute
+  AdminReferenceLettersRoute: typeof AdminReferenceLettersRoute
   AdminStoriesRoute: typeof AdminStoriesRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
@@ -221,6 +261,7 @@ const AdminRouteRouteChildren: AdminRouteRouteChildren = {
   AdminEvangelizationRoute: AdminEvangelizationRoute,
   AdminGalleryRoute: AdminGalleryRoute,
   AdminLoginRoute: AdminLoginRoute,
+  AdminReferenceLettersRoute: AdminReferenceLettersRoute,
   AdminStoriesRoute: AdminStoriesRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
@@ -232,6 +273,7 @@ const AdminRouteRouteWithChildren = AdminRouteRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRouteRoute: AdminRouteRouteWithChildren,
+  CartasReferencialesRoute: CartasReferencialesRoute,
   EvangelizacionRoute: EvangelizacionRoute,
 }
 export const routeTree = rootRouteImport

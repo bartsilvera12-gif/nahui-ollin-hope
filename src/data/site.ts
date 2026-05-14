@@ -8,6 +8,7 @@ export const navLinks = [
   { label: "Sobre", href: "/#sobre" },
   { label: "Acciones", href: "/#acciones" },
   { label: "Evangelización", href: "/evangelizacion" },
+  { label: "Cartas Referenciales", href: "/cartas-referenciales" },
   { label: "Historias", href: "/#historias" },
 ];
 
@@ -173,6 +174,20 @@ export type EvangelizationMedia = {
 };
 
 export const evangelizationMedia: EvangelizationMedia[] = [];
+
+export type ReferenceLetter = {
+  type: "image" | "video";
+  src: string;
+  alt?: string;
+};
+
+export const referenceLetters: ReferenceLetter[] = [
+  { type: "image", src: "/cartas-referenciales/carta-01.jpg", alt: "Carta referencial 1" },
+  { type: "image", src: "/cartas-referenciales/carta-02.jpg", alt: "Carta referencial 2" },
+  { type: "image", src: "/cartas-referenciales/carta-03.jpg", alt: "Carta referencial 3" },
+  { type: "image", src: "/cartas-referenciales/carta-04.jpg", alt: "Carta referencial 4" },
+  { type: "image", src: "/cartas-referenciales/carta-05.jpg", alt: "Carta referencial 5" },
+];
 
 export const volunteerWays = [
   { icon: "Utensils", title: "Donar alimentos" },

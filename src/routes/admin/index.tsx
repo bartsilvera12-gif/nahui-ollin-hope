@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { ArrowRight, Cross, Images, ListChecks, MessageSquareHeart } from "lucide-react";
+import { ArrowRight, Cross, FileText, Images, ListChecks, MessageSquareHeart } from "lucide-react";
 import { getSupabase } from "@/lib/supabase";
 import { Card, PageHeader } from "@/components/admin/ui";
 
@@ -8,7 +8,7 @@ export const Route = createFileRoute("/admin/")({
   component: Dashboard,
 });
 
-type Counts = { stories: number; actions: number; gallery: number; evangelization: number };
+type Counts = { stories: number; actions: number; gallery: number; evangelization: number; referenceLetters: number };
 
 function Dashboard() {
   const [counts, setCounts] = useState<Counts | null>(null);
@@ -18,21 +18,24 @@ function Dashboard() {
     const sb = getSupabase();
     const fetchAll = async () => {
       try {
-        const [s, a, g, e] = await Promise.all([
+        const [s, a, g, e, r] = await Promise.all([
           sb.from("stories").select("id", { count: "exact", head: true }),
           sb.from("actions").select("id", { count: "exact", head: true }),
           sb.from("gallery_images").select("id", { count: "exact", head: true }),
           sb.from("evangelization_media").select("id", { count: "exact", head: true }),
+          sb.from("reference_letters").select("id", { count: "exact", head: true }),
         ]);
         if (s.error) throw s.error;
         if (a.error) throw a.error;
         if (g.error) throw g.error;
         if (e.error) throw e.error;
+        if (r.error) throw r.error;
         setCounts({
           stories: s.count ?? 0,
           actions: a.count ?? 0,
           gallery: g.count ?? 0,
           evangelization: e.count ?? 0,
+          referenceLetters: r.count ?? 0,
         });
       } catch (e) {
         setErr(e instanceof Error ? e.message : "Error consultando Supabase");
@@ -55,6 +58,13 @@ function Dashboard() {
       title: "Evangelización",
       count: counts?.evangelization,
       desc: "Galería de imágenes y videos del acompañamiento espiritual.",
+    },
+    {
+      to: "/admin/reference-letters",
+      icon: FileText,
+      title: "Cartas Referenciales",
+      count: counts?.referenceLetters,
+      desc: "Cartas y testimonios que respaldan la obra.",
     },
     {
       to: "/admin/actions",

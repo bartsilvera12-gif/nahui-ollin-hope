@@ -42,6 +42,16 @@ export type StoryRow = {
   updated_at: string;
 };
 
+export type ReferenceLetterRow = {
+  id: string;
+  url: string;
+  alt: string | null;
+  media_type: "image" | "video";
+  sort_order: number;
+  visible: boolean;
+  created_at: string;
+};
+
 export type EvangelizationMediaRow = {
   id: string;
   url: string;
@@ -88,7 +98,7 @@ export const MEDIA_BUCKET = "nahui-media";
 
 export async function uploadMedia(
   file: File,
-  folder: "gallery" | "stories" | "actions" | "evangelization" = "gallery",
+  folder: "gallery" | "stories" | "actions" | "evangelization" | "reference-letters" = "gallery",
 ) {
   const supabase = getSupabase();
   const ext = file.name.split(".").pop()?.toLowerCase() || "jpg";
