@@ -153,7 +153,7 @@ export function Stories() {
             <h3 className="mt-3 text-2xl md:text-3xl font-bold text-foreground">
               {story.title}
             </h3>
-            <p className="mt-5 text-muted-foreground leading-relaxed">
+            <p className="mt-5 text-muted-foreground leading-relaxed whitespace-pre-line">
               {story.description}
             </p>
           </div>
