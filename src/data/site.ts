@@ -178,7 +178,7 @@ export type EvangelizationCase = {
 
 export const evangelizationCases: EvangelizationCase[] = [
   {
-    title: "De los basureros al altar",
+    title: "La 1ra antes de Esperanza",
     date: "Primer caso de evangelización",
     description:
       "Cuando lo conocimos, este pequeño vivía recogiendo comida en un basurero, descalzo y con la carita sucia. Lo acompañamos en la catequesis, lo apoyamos en su crecimiento humano y espiritual, y hoy lo vemos vestido de blanco recibiendo los sacramentos.\n\nSomos sus padrinos en su camino de fe — bautismo, primera comunión y confirmación — y testigos de cómo, de la mano de Dios, su vida fue transformándose.\n\nSon los hijos de Dios, y esta es Su Obra de Amor.",
