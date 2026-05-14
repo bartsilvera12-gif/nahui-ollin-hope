@@ -155,6 +155,7 @@ export type GalleryItem =
 export const galleryItems: GalleryItem[] = [
   { type: "video", src: "/galeria/videos/video-01.mp4" },
   { type: "video", src: "/galeria/videos/video-02.mp4" },
+  { type: "video", src: "/galeria/videos/video-03.mp4" },
   ...Array.from({ length: 21 }, (_, i) => {
     const n = String(i + 1).padStart(2, "0");
     return { type: "image" as const, src: `/galeria/galeria-${n}.jpg` };
