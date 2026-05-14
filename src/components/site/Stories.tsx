@@ -73,10 +73,10 @@ export function Stories() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="mt-10 bg-card rounded-[2rem] border border-border shadow-soft overflow-hidden grid lg:grid-cols-2"
+          className="mt-10 bg-card rounded-[2rem] border border-border shadow-soft overflow-hidden grid lg:grid-cols-2 lg:items-stretch"
         >
           {/* Carousel */}
-          <div className="relative order-1 lg:order-2 aspect-[4/3] lg:aspect-auto lg:min-h-[460px] bg-muted">
+          <div className="relative order-1 lg:order-2 aspect-[4/3] lg:aspect-auto lg:h-[600px] bg-muted">
             <AnimatePresence mode="wait">
               <motion.img
                 key={`${activeStory}-${phase}-${activeImg}`}
@@ -145,7 +145,7 @@ export function Stories() {
           </div>
 
           {/* Text */}
-          <div className="order-2 lg:order-1 p-8 md:p-12 flex flex-col justify-center">
+          <div className="order-2 lg:order-1 p-8 md:p-12 flex flex-col lg:max-h-[600px] lg:overflow-y-auto">
             <div className="inline-flex items-center gap-2 text-xs font-semibold text-turquoise uppercase tracking-wider">
               <CalendarDays className="h-4 w-4" />
               {story.date}
