@@ -4,12 +4,11 @@
 export const DONATION_URL = "https://square.link/u/rHdd8zZz";
 
 export const navLinks = [
-  { label: "Inicio", href: "#inicio" },
-  { label: "Sobre", href: "#sobre" },
-  { label: "Acciones", href: "#acciones" },
-  { label: "Evangelización", href: "#evangelizacion" },
-  { label: "Historias", href: "#historias" },
-
+  { label: "Inicio", href: "/#inicio" },
+  { label: "Sobre", href: "/#sobre" },
+  { label: "Acciones", href: "/#acciones" },
+  { label: "Evangelización", href: "/evangelizacion" },
+  { label: "Historias", href: "/#historias" },
 ];
 
 export const WHATSAPP_URL = "https://wa.me/595XXXXXXXXX";

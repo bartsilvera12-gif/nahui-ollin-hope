@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as EvangelizacionRouteImport } from './routes/evangelizacion'
 import { Route as AdminRouteRouteImport } from './routes/admin/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
@@ -18,6 +19,11 @@ import { Route as AdminGalleryRouteImport } from './routes/admin/gallery'
 import { Route as AdminEvangelizationRouteImport } from './routes/admin/evangelization'
 import { Route as AdminActionsRouteImport } from './routes/admin/actions'
 
+const EvangelizacionRoute = EvangelizacionRouteImport.update({
+  id: '/evangelizacion',
+  path: '/evangelizacion',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminRouteRoute = AdminRouteRouteImport.update({
   id: '/admin',
   path: '/admin',
@@ -62,6 +68,7 @@ const AdminActionsRoute = AdminActionsRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteRouteWithChildren
+  '/evangelizacion': typeof EvangelizacionRoute
   '/admin/actions': typeof AdminActionsRoute
   '/admin/evangelization': typeof AdminEvangelizationRoute
   '/admin/gallery': typeof AdminGalleryRoute
@@ -71,6 +78,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/evangelizacion': typeof EvangelizacionRoute
   '/admin/actions': typeof AdminActionsRoute
   '/admin/evangelization': typeof AdminEvangelizationRoute
   '/admin/gallery': typeof AdminGalleryRoute
@@ -82,6 +90,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteRouteWithChildren
+  '/evangelizacion': typeof EvangelizacionRoute
   '/admin/actions': typeof AdminActionsRoute
   '/admin/evangelization': typeof AdminEvangelizationRoute
   '/admin/gallery': typeof AdminGalleryRoute
@@ -94,6 +103,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/admin'
+    | '/evangelizacion'
     | '/admin/actions'
     | '/admin/evangelization'
     | '/admin/gallery'
@@ -103,6 +113,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/evangelizacion'
     | '/admin/actions'
     | '/admin/evangelization'
     | '/admin/gallery'
@@ -113,6 +124,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/admin'
+    | '/evangelizacion'
     | '/admin/actions'
     | '/admin/evangelization'
     | '/admin/gallery'
@@ -124,10 +136,18 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRouteRoute: typeof AdminRouteRouteWithChildren
+  EvangelizacionRoute: typeof EvangelizacionRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/evangelizacion': {
+      id: '/evangelizacion'
+      path: '/evangelizacion'
+      fullPath: '/evangelizacion'
+      preLoaderRoute: typeof EvangelizacionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin': {
       id: '/admin'
       path: '/admin'
@@ -212,6 +232,7 @@ const AdminRouteRouteWithChildren = AdminRouteRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRouteRoute: AdminRouteRouteWithChildren,
+  EvangelizacionRoute: EvangelizacionRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

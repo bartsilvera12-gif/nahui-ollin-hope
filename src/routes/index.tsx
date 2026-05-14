@@ -5,7 +5,6 @@ import { About } from "@/components/site/About";
 import { Impact } from "@/components/site/Impact";
 import { Actions } from "@/components/site/Actions";
 import { Stories } from "@/components/site/Stories";
-import { Evangelization } from "@/components/site/Evangelization";
 import { Donation } from "@/components/site/Donation";
 import { Gallery } from "@/components/site/Gallery";
 import { Objectives } from "@/components/site/Objectives";
@@ -39,7 +38,6 @@ function Index() {
         <About />
         <Actions />
         <Gallery />
-        <Evangelization />
         <Stories />
         <Impact />
         <Objectives />
