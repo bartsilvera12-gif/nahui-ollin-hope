@@ -68,9 +68,7 @@ export function ReferenceLetters() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: (i % 4) * 0.05 }}
                 onClick={() => setOpen(i)}
-                className={`group relative overflow-hidden rounded-2xl shadow-soft focus:outline-none focus:ring-2 focus:ring-turquoise ${
-                  i % 5 === 0 ? "row-span-2 aspect-[3/4]" : "aspect-square"
-                }`}
+                className="group relative overflow-hidden rounded-2xl shadow-soft bg-white aspect-[3/4] focus:outline-none focus:ring-2 focus:ring-turquoise"
                 aria-label={item.media_type === "video" ? `Ver video ${i + 1}` : `Ver carta ${i + 1}`}
               >
                 {item.media_type === "image" ? (
@@ -78,7 +76,7 @@ export function ReferenceLetters() {
                     src={item.url}
                     alt={item.alt ?? `Carta referencial ${i + 1}`}
                     loading="lazy"
-                    className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-700"
+                    className="h-full w-full object-contain p-2 group-hover:scale-105 transition-transform duration-500"
                   />
                 ) : (
                   <>
@@ -87,7 +85,7 @@ export function ReferenceLetters() {
                       muted
                       playsInline
                       preload="metadata"
-                      className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-700"
+                      className="h-full w-full object-contain group-hover:scale-105 transition-transform duration-500"
                     />
                     <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/30 transition">
                       <div className="h-14 w-14 rounded-full bg-white/90 flex items-center justify-center shadow-glow">
