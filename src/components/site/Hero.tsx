@@ -59,8 +59,8 @@ export function Hero() {
         >
           <div className="relative aspect-square rounded-[2.5rem] overflow-hidden shadow-glow">
             <img
-              src="/galeria/galeria-09.jpg"
-              alt="Niños vestidos de blanco acompañados por la fundación en una jornada especial"
+              src="/hero.jpg"
+              alt="Niños vestidos de blanco en primera comunión acompañados por la fundación"
               className="h-full w-full object-cover"
               loading="eager"
             />
