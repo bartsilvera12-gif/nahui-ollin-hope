@@ -68,7 +68,11 @@ from (values
   ('/img-evangelizacion/evang-02.jpg', 'Acompañamiento espiritual', 2),
   ('/img-evangelizacion/evang-03.jpg', 'Acompañamiento espiritual', 3),
   ('/img-evangelizacion/evang-04.jpg', 'Acompañamiento espiritual', 4),
-  ('/img-evangelizacion/evang-05.jpg', 'Acompañamiento espiritual', 5)
+  ('/img-evangelizacion/evang-05.jpg', 'Acompañamiento espiritual', 5),
+  ('/img-evangelizacion/evang-06.jpg', 'Acompañamiento espiritual', 6),
+  ('/img-evangelizacion/evang-07.jpg', 'Acompañamiento espiritual', 7),
+  ('/img-evangelizacion/evang-08.jpg', 'Acompañamiento espiritual', 8),
+  ('/img-evangelizacion/evang-09.jpg', 'Acompañamiento espiritual', 9)
 ) as v(url, alt, sort_order)
 where not exists (
   select 1 from nahui.evangelization_media e where e.url = v.url

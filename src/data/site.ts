@@ -179,6 +179,10 @@ export const evangelizationMedia: EvangelizationMedia[] = [
   { type: "image", src: "/img-evangelizacion/evang-03.jpg", alt: "Acompañamiento espiritual" },
   { type: "image", src: "/img-evangelizacion/evang-04.jpg", alt: "Acompañamiento espiritual" },
   { type: "image", src: "/img-evangelizacion/evang-05.jpg", alt: "Acompañamiento espiritual" },
+  { type: "image", src: "/img-evangelizacion/evang-06.jpg", alt: "Acompañamiento espiritual" },
+  { type: "image", src: "/img-evangelizacion/evang-07.jpg", alt: "Acompañamiento espiritual" },
+  { type: "image", src: "/img-evangelizacion/evang-08.jpg", alt: "Acompañamiento espiritual" },
+  { type: "image", src: "/img-evangelizacion/evang-09.jpg", alt: "Acompañamiento espiritual" },
 ];
 
 export type ReferenceLetter = {
