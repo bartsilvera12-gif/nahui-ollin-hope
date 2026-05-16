@@ -174,7 +174,11 @@ export type EvangelizationMedia = {
 };
 
 export const evangelizationMedia: EvangelizationMedia[] = [
-  { type: "image", src: "/img-evangelizacion/evang-01.jpg", alt: "Confirmación con el sacerdote" },
+  { type: "image", src: "/img-evangelizacion/evang-01.jpg", alt: "Acompañamiento espiritual" },
+  { type: "image", src: "/img-evangelizacion/evang-02.jpg", alt: "Acompañamiento espiritual" },
+  { type: "image", src: "/img-evangelizacion/evang-03.jpg", alt: "Acompañamiento espiritual" },
+  { type: "image", src: "/img-evangelizacion/evang-04.jpg", alt: "Acompañamiento espiritual" },
+  { type: "image", src: "/img-evangelizacion/evang-05.jpg", alt: "Acompañamiento espiritual" },
 ];
 
 export type ReferenceLetter = {
