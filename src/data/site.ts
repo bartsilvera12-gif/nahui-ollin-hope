@@ -173,7 +173,9 @@ export type EvangelizationMedia = {
   alt?: string;
 };
 
-export const evangelizationMedia: EvangelizationMedia[] = [];
+export const evangelizationMedia: EvangelizationMedia[] = [
+  { type: "image", src: "/img-evangelizacion/evang-01.jpg", alt: "Confirmación con el sacerdote" },
+];
 
 export type ReferenceLetter = {
   type: "image" | "video";
@@ -191,7 +193,6 @@ export const referenceLetters: ReferenceLetter[] = [
   { type: "image", src: "/img-cartas-referenciales/carta-07.jpg", alt: "Carta referencial 7" },
   { type: "image", src: "/img-cartas-referenciales/carta-08.jpg", alt: "Carta referencial 8" },
   { type: "image", src: "/img-cartas-referenciales/carta-09.jpg", alt: "Carta referencial 9" },
-  { type: "image", src: "/img-cartas-referenciales/carta-10.jpg", alt: "Carta referencial 10" },
 ];
 
 export const volunteerWays = [
