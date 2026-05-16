@@ -15,12 +15,22 @@ export function Hero() {
           transition={{ duration: 0.7 }}
         >
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-foreground">
-            Transformamos pequeños momentos en{" "}
-            <span className="text-gradient-brand">grandes esperanzas</span>
+            <span className="text-gradient-brand">NAHUI OLLIN</span>
           </h1>
-          <p className="mt-6 text-lg text-muted-foreground max-w-xl">
-            Nahui Ollin Inc acompaña a niños en estado de calle mediante alimentación,
-            contención, regalos y acciones solidarias que devuelven sonrisas.
+          <p className="mt-6 text-base md:text-lg text-muted-foreground max-w-xl leading-relaxed">
+            Es el nombre en el idioma náhuatl de la flor de cuatro pétalos
+            ubicada sobre el vientre de la santísima Virgen de Guadalupe en la
+            tilma de San Juan Diego que significa el centro del universo:
+            Jesucristo.
+          </p>
+          <p className="mt-3 text-base md:text-lg font-semibold text-deep-blue max-w-xl">
+            Nahui Ollin significa Jesús en el vientre de María.
+          </p>
+          <p className="mt-4 text-base md:text-lg text-muted-foreground max-w-xl leading-relaxed">
+            En Nahui Ollin acompañamos a niños en extrema pobreza en basureros
+            mediante la alimentación, catequesis, evangelización, educación,
+            apoyo y acciones solidarias que devuelven sonrisas y tocan con Amor
+            los corazones.
           </p>
           <div className="mt-8 flex flex-wrap gap-4">
             <a
