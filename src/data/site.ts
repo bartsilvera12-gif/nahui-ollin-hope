@@ -187,6 +187,10 @@ export const referenceLetters: ReferenceLetter[] = [
   { type: "image", src: "/img-cartas-referenciales/carta-03.jpg", alt: "Carta referencial 3" },
   { type: "image", src: "/img-cartas-referenciales/carta-04.jpg", alt: "Carta referencial 4" },
   { type: "image", src: "/img-cartas-referenciales/carta-05.jpg", alt: "Carta referencial 5" },
+  { type: "image", src: "/img-cartas-referenciales/carta-06.jpg", alt: "Carta referencial 6" },
+  { type: "image", src: "/img-cartas-referenciales/carta-07.jpg", alt: "Carta referencial 7" },
+  { type: "image", src: "/img-cartas-referenciales/carta-08.jpg", alt: "Carta referencial 8" },
+  { type: "image", src: "/img-cartas-referenciales/carta-09.jpg", alt: "Carta referencial 9" },
 ];
 
 export const volunteerWays = [
