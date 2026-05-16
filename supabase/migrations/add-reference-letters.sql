@@ -47,9 +47,9 @@ grant all    on nahui.reference_letters to authenticated;
 -- Seed con las 5 cartas iniciales en /cartas-referenciales/
 insert into nahui.reference_letters (url, alt, media_type, sort_order, visible)
 values
-  ('/cartas-referenciales/carta-01.jpg', 'Carta referencial 1', 'image', 1, true),
-  ('/cartas-referenciales/carta-02.jpg', 'Carta referencial 2', 'image', 2, true),
-  ('/cartas-referenciales/carta-03.jpg', 'Carta referencial 3', 'image', 3, true),
-  ('/cartas-referenciales/carta-04.jpg', 'Carta referencial 4', 'image', 4, true),
-  ('/cartas-referenciales/carta-05.jpg', 'Carta referencial 5', 'image', 5, true)
+  ('/img-cartas-referenciales/carta-01.jpg', 'Carta referencial 1', 'image', 1, true),
+  ('/img-cartas-referenciales/carta-02.jpg', 'Carta referencial 2', 'image', 2, true),
+  ('/img-cartas-referenciales/carta-03.jpg', 'Carta referencial 3', 'image', 3, true),
+  ('/img-cartas-referenciales/carta-04.jpg', 'Carta referencial 4', 'image', 4, true),
+  ('/img-cartas-referenciales/carta-05.jpg', 'Carta referencial 5', 'image', 5, true)
 on conflict do nothing;
