@@ -76,13 +76,13 @@ export function About() {
           </motion.div>
         </div>
 
-        <div className="mt-16 grid md:grid-cols-2 gap-6">
+        <div className="mt-16 grid md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch auto-rows-fr">
           <motion.article
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="bg-card rounded-3xl p-7 md:p-8 border border-border shadow-soft"
+            className="h-full bg-card rounded-3xl p-7 md:p-8 border border-border shadow-soft"
           >
             <div className="flex items-center gap-3">
               <div className="h-12 w-12 rounded-2xl bg-gradient-brand flex items-center justify-center">
@@ -100,7 +100,7 @@ export function About() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="bg-card rounded-3xl p-7 md:p-8 border border-border shadow-soft"
+            className="h-full bg-card rounded-3xl p-7 md:p-8 border border-border shadow-soft"
           >
             <div className="flex items-center gap-3">
               <div className="h-12 w-12 rounded-2xl bg-gradient-brand flex items-center justify-center">
@@ -110,6 +110,24 @@ export function About() {
             </div>
             <p className="mt-4 text-sm md:text-base text-muted-foreground leading-relaxed">
               {aboutContent.vision}
+            </p>
+          </motion.article>
+
+          <motion.article
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="h-full bg-card rounded-3xl p-7 md:p-8 border border-border shadow-soft"
+          >
+            <div className="flex items-center gap-3">
+              <div className="h-12 w-12 rounded-2xl bg-gradient-brand flex items-center justify-center">
+                <Cross className="h-6 w-6 text-white" />
+              </div>
+              <h3 className="text-2xl font-bold text-foreground">Evangelización</h3>
+            </div>
+            <p className="mt-4 text-sm md:text-base text-muted-foreground leading-relaxed">
+              {aboutContent.evangelizacion}
             </p>
           </motion.article>
         </div>
