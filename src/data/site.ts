@@ -27,7 +27,7 @@ export const aboutContent = {
     "A lo largo de este tiempo, hemos sido testigos de cómo, de la mano de Dios, han crecido y logrado alcanzar sus sueños.",
   ],
   mision:
-    "Satisfacer las necesidades básicas y sanar el dolor causado por el hambre, la pobreza y el abandono de niños y/o vendedores que viven bajo la sombra de la muerte: niños abandonados que buscan de comer en los basureros y vendedores en diferentes países. Empoderarlos a través de la educación para que puedan manejar y conquistar su mundo y cumplir sus más grandes sueños. Capacitarlos para que les enseñen a otros a cambiar hacia la ruta de la productividad.",
+    "Satisfacer las necesidades básicas y sanar el dolor causado por el hambre, la pobreza y el abandono de niños que viven bajo la sombra de la muerte: niños abandonados que buscan de comer en los basureros en diferentes países. Empoderarlos a través de la educación para que puedan manejar y conquistar su mundo; para que puedan lograr cumplir sus más grandes sueños. Capacitarlos para que a su vez ayuden y les enseñen a otros a enfrentar obstáculos, a conocer, acercarse y descubrir el amor de Dios, y encontrar en la fe católica la fuente de resiliencia y sus propósitos de vida.",
   vision:
     "Promover el amor, que es Dios, la misericordia, la compasión, el servicio y la igualdad de derechos para aquellos niños que están en desventaja debido al rechazo, el olvido y el aislamiento social. Impulsar un modelo que fomente la participación y la responsabilidad social hacia estas comunidades en necesidad, de parte de otras entidades públicas y privadas, como también de otras comunidades.",
 };
