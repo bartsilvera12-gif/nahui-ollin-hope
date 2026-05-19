@@ -11,6 +11,7 @@ import {
   GraduationCap,
   Home,
   Megaphone,
+  Cross,
 } from "lucide-react";
 import { aboutContent, values } from "@/data/site";
 import crFeedinKids from "@/assets/cr-feedin-kids.jpg";
@@ -25,6 +26,7 @@ const iconMap = {
   GraduationCap,
   Home,
   Megaphone,
+  Cross,
 } as const;
 
 type IconKey = keyof typeof iconMap;
