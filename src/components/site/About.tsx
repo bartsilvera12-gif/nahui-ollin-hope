@@ -124,7 +124,7 @@ export function About() {
             </h3>
           </div>
 
-          <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-5 items-stretch">
             {values.map((v, i) => {
               const Icon = iconMap[v.icon as IconKey] ?? Heart;
               return (
@@ -134,7 +134,7 @@ export function About() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: i * 0.08 }}
-                  className="group bg-card rounded-3xl p-6 border border-border shadow-soft hover:-translate-y-1.5 hover:shadow-glow transition-all"
+                  className="group h-full bg-card rounded-3xl p-6 border border-border shadow-soft hover:-translate-y-1.5 hover:shadow-glow transition-all"
                 >
                   <div className="h-12 w-12 rounded-2xl bg-gradient-brand flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                     <Icon className="h-6 w-6 text-white" />
