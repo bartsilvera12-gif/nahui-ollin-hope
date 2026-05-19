@@ -122,7 +122,7 @@ export function About() {
             </h3>
           </div>
 
-          <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-5 gap-5">
+          <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {values.map((v, i) => {
               const Icon = iconMap[v.icon as IconKey] ?? Heart;
               return (

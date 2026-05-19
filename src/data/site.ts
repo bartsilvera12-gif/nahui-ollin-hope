@@ -73,6 +73,7 @@ export const objetivos = [
 
 export const values = [
   { icon: "Heart", title: "Amor", description: "Cada acción nace desde el corazón." },
+  { icon: "Megaphone", title: "Evangelización", description: "No solo se trabaja el alma, sino también se brinda un sentido de propósito, de servicio y de pertenencia, lo cual es un gran motor de cambio." },
   { icon: "Sparkles", title: "Esperanza", description: "Creemos en pequeños gestos que pueden cambiar días enteros." },
   { icon: "Shield", title: "Protección", description: "Buscamos que cada niño se sienta acompañado y cuidado." },
   { icon: "Users", title: "Comunidad", description: "Unimos personas, voluntarios y familias para ayudar." },
