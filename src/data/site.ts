@@ -74,7 +74,7 @@ export const objetivos = [
 export const values = [
   { icon: "Heart", title: "Amor", description: "Cada acción nace desde el corazón." },
   { icon: "Cross", title: "Evangelización", description: "No solo se trabaja el alma, sino también se brinda un sentido de propósito, de servicio y de pertenencia, lo cual es un gran motor de cambio." },
-  { icon: "Sparkles", title: "Esperanza", description: "Creemos en pequeños gestos que pueden cambiar días enteros." },
+  { icon: "Sparkles", title: "Esperanza", description: "Una esperanza concreta y transformadora, que no solo se enfoca en las necesidades materiales, sino que también les da un sentido de valor, identidad y propósito. Al brindar educación, cuidado, catequesis y comunidad, estos niños empiezan a creer en un futuro diferente, donde no son solo víctimas de su entorno, sino protagonistas de su propio cambio que los lleva a pasar de \"víctimas\" a \"victoriosos\"." },
   { icon: "Shield", title: "Protección", description: "Buscamos que cada niño se sienta acompañado y cuidado." },
   { icon: "Users", title: "Comunidad", description: "Unimos personas, voluntarios y familias para ayudar." },
   { icon: "HandHeart", title: "Movimiento solidario", description: "La ayuda crece cuando más personas deciden sumarse." },
