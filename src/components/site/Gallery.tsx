@@ -20,13 +20,17 @@ export function Gallery() {
   const [open, setOpen] = useState<number | null>(null);
 
   useEffect(() => {
-    if (!supabaseConfigured) return;
+    if (!supabaseConfigured) {
+      console.log("[Gallery] supabase no configurado, usando estáticos");
+      return;
+    }
     const sb = getSupabase();
     sb.from("gallery_images")
       .select("*")
       .eq("visible", true)
       .order("sort_order", { ascending: true })
-      .then(({ data }) => {
+      .then(({ data, error }) => {
+        console.log("[Gallery] data:", data, "error:", error);
         const rows = (data ?? []) as GalleryImageRow[];
         if (rows.length > 0) setItems(rows);
       });
@@ -72,11 +76,6 @@ export function Gallery() {
                   src={item.url}
                   alt={item.alt ?? ""}
                   loading="lazy"
-                  onError={(e) => {
-                    // Si la imagen falla, ocultar la card entera (mejor que mostrar alt como fallback)
-                    const btn = e.currentTarget.closest("button");
-                    if (btn) btn.style.display = "none";
-                  }}
                   className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-700 bg-slate-100"
                 />
               ) : (

@@ -78,10 +78,6 @@ export function Evangelization() {
                     src={item.url}
                     alt={item.alt ?? ""}
                     loading="lazy"
-                    onError={(e) => {
-                      const btn = e.currentTarget.closest("button");
-                      if (btn) btn.style.display = "none";
-                    }}
                     className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-700 bg-slate-100"
                   />
                 ) : (
