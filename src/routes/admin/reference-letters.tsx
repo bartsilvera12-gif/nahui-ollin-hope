@@ -104,6 +104,16 @@ function ReferenceLettersAdmin() {
     else load();
   };
 
+  const updateAlt = async (id: string, alt: string) => {
+    const next = alt.trim() || null;
+    const { error } = await sb
+      .from("reference_letters")
+      .update({ alt: next })
+      .eq("id", id);
+    if (error) setError(error.message);
+    else load();
+  };
+
   const remove = async (id: string) => {
     if (!confirm("¿Eliminar esta carta?")) return;
     const { error } = await sb.from("reference_letters").delete().eq("id", id);
@@ -254,6 +264,17 @@ function ReferenceLettersAdmin() {
                   <Trash2 className="h-4 w-4" />
                 </Button>
               </div>
+              <TextInput
+                key={`alt-${row.id}-${row.alt ?? ""}`}
+                className="mt-2 h-9 text-xs"
+                placeholder="Descripción (alt)"
+                defaultValue={row.alt ?? ""}
+                onBlur={(e) => {
+                  const next = e.target.value;
+                  if (next !== (row.alt ?? "")) updateAlt(row.id, next);
+                }}
+                title="Texto descriptivo (se guarda al salir del campo)"
+              />
               <p className="mt-1 truncate text-[10px] text-slate-400" title={row.url}>
                 {row.url}
               </p>
