@@ -1,8 +1,22 @@
 -- =====================================================================
--- Normaliza media_type en gallery_images, evangelization_media y
--- reference_letters según la extensión de la URL.
--- Pegar en Supabase SQL Editor → Run.
+-- 1) Agrega media_type si falta + 2) Normaliza según extensión de URL
+-- Pegar en Supabase SQL Editor → Run. Idempotente.
 -- =====================================================================
+
+-- 1) Asegurar la columna media_type en las 3 tablas (idempotente)
+alter table nahui.gallery_images
+  add column if not exists media_type text not null default 'image'
+  check (media_type in ('image', 'video'));
+
+alter table nahui.evangelization_media
+  add column if not exists media_type text not null default 'image'
+  check (media_type in ('image', 'video'));
+
+alter table nahui.reference_letters
+  add column if not exists media_type text not null default 'image'
+  check (media_type in ('image', 'video'));
+
+-- 2) Normalizar valores según extensión
 
 -- Galería
 update nahui.gallery_images
@@ -37,7 +51,7 @@ update nahui.reference_letters
  where lower(url) ~ '\.(mp4|webm|ogg|mov|m4v)(\?|$)'
    and media_type <> 'video';
 
--- Confirmación: ver cuántas filas hay de cada tipo
+-- 3) Confirmación
 select 'gallery_images' as tabla, media_type, count(*) from nahui.gallery_images group by media_type
 union all
 select 'evangelization_media', media_type, count(*) from nahui.evangelization_media group by media_type
