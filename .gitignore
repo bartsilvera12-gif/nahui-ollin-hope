@@ -26,6 +26,9 @@ dist-hostinger.zip
 .env.local
 .env.*.local
 
+# Claude Code session artifacts (local worktrees, agent state)
+.claude/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
