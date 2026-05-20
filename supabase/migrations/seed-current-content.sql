@@ -43,37 +43,39 @@ grant select on nahui.reference_letters to anon;
 grant all    on nahui.reference_letters to authenticated;
 
 -- Seed cartas (9 imagenes) ---------------------------------------------
+-- alt se deja NULL: el admin lo puede cargar después si quiere mostrar caption.
 insert into nahui.reference_letters (url, alt, media_type, sort_order, visible)
-select v.url, v.alt, 'image', v.sort_order, true
+select v.url, null, 'image', v.sort_order, true
 from (values
-  ('/img-cartas-referenciales/carta-01.jpg', 'Carta referencial 1', 1),
-  ('/img-cartas-referenciales/carta-02.jpg', 'Carta referencial 2', 2),
-  ('/img-cartas-referenciales/carta-03.jpg', 'Carta referencial 3', 3),
-  ('/img-cartas-referenciales/carta-04.jpg', 'Carta referencial 4', 4),
-  ('/img-cartas-referenciales/carta-05.jpg', 'Carta referencial 5', 5),
-  ('/img-cartas-referenciales/carta-06.jpg', 'Carta referencial 6', 6),
-  ('/img-cartas-referenciales/carta-07.jpg', 'Carta referencial 7', 7),
-  ('/img-cartas-referenciales/carta-08.jpg', 'Carta referencial 8', 8),
-  ('/img-cartas-referenciales/carta-09.jpg', 'Carta referencial 9', 9)
-) as v(url, alt, sort_order)
+  ('/img-cartas-referenciales/carta-01.jpg', 1),
+  ('/img-cartas-referenciales/carta-02.jpg', 2),
+  ('/img-cartas-referenciales/carta-03.jpg', 3),
+  ('/img-cartas-referenciales/carta-04.jpg', 4),
+  ('/img-cartas-referenciales/carta-05.jpg', 5),
+  ('/img-cartas-referenciales/carta-06.jpg', 6),
+  ('/img-cartas-referenciales/carta-07.jpg', 7),
+  ('/img-cartas-referenciales/carta-08.jpg', 8),
+  ('/img-cartas-referenciales/carta-09.jpg', 9)
+) as v(url, sort_order)
 where not exists (
   select 1 from nahui.reference_letters r where r.url = v.url
 );
 
 -- Evangelizacion (5 fotos) ---------------------------------------------
+-- alt se deja NULL: el admin lo puede cargar después si quiere mostrar caption.
 insert into nahui.evangelization_media (url, alt, media_type, sort_order, visible)
-select v.url, v.alt, 'image', v.sort_order, true
+select v.url, null, 'image', v.sort_order, true
 from (values
-  ('/img-evangelizacion/evang-01.jpg', 'Acompañamiento espiritual', 1),
-  ('/img-evangelizacion/evang-02.jpg', 'Acompañamiento espiritual', 2),
-  ('/img-evangelizacion/evang-03.jpg', 'Acompañamiento espiritual', 3),
-  ('/img-evangelizacion/evang-04.jpg', 'Acompañamiento espiritual', 4),
-  ('/img-evangelizacion/evang-05.jpg', 'Acompañamiento espiritual', 5),
-  ('/img-evangelizacion/evang-06.jpg', 'Acompañamiento espiritual', 6),
-  ('/img-evangelizacion/evang-07.jpg', 'Acompañamiento espiritual', 7),
-  ('/img-evangelizacion/evang-08.jpg', 'Acompañamiento espiritual', 8),
-  ('/img-evangelizacion/evang-09.jpg', 'Acompañamiento espiritual', 9)
-) as v(url, alt, sort_order)
+  ('/img-evangelizacion/evang-01.jpg', 1),
+  ('/img-evangelizacion/evang-02.jpg', 2),
+  ('/img-evangelizacion/evang-03.jpg', 3),
+  ('/img-evangelizacion/evang-04.jpg', 4),
+  ('/img-evangelizacion/evang-05.jpg', 5),
+  ('/img-evangelizacion/evang-06.jpg', 6),
+  ('/img-evangelizacion/evang-07.jpg', 7),
+  ('/img-evangelizacion/evang-08.jpg', 8),
+  ('/img-evangelizacion/evang-09.jpg', 9)
+) as v(url, sort_order)
 where not exists (
   select 1 from nahui.evangelization_media e where e.url = v.url
 );

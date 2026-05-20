@@ -294,6 +294,7 @@ values
 on conflict do nothing;
 
 -- 7.3 Gallery (21 imágenes existentes)
+-- alt se deja NULL: se carga después desde el admin si se desea mostrar caption.
 do $$
 declare i int;
 begin
@@ -301,7 +302,7 @@ begin
     insert into nahui.gallery_images (url, alt, sort_order)
     values (
       '/galeria/galeria-' || lpad(i::text, 2, '0') || '.jpg',
-      'Galería Nahui Ollin ' || i,
+      null,
       i
     )
     on conflict do nothing;
