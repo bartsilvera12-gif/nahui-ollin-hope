@@ -70,9 +70,14 @@ export function Gallery() {
               {item.media_type === "image" ? (
                 <img
                   src={item.url}
-                  alt={item.alt ?? `Galería Nahui Ollin ${i + 1}`}
+                  alt={item.alt ?? ""}
                   loading="lazy"
-                  className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-700"
+                  onError={(e) => {
+                    // Si la imagen falla, ocultar la card entera (mejor que mostrar alt como fallback)
+                    const btn = e.currentTarget.closest("button");
+                    if (btn) btn.style.display = "none";
+                  }}
+                  className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-700 bg-slate-100"
                 />
               ) : (
                 <>
