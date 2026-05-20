@@ -1,18 +1,27 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
-import { Eye, EyeOff, Trash2, Play } from "lucide-react";
+import { Eye, EyeOff, Trash2, Upload, Play, Image as ImageIcon, Video as VideoIcon } from "lucide-react";
 import { getSupabase, type EvangelizationMediaRow } from "@/lib/supabase";
-import { Button, Card, EmptyState, PageHeader, TextInput } from "@/components/admin/ui";
+import { Button, Card, EmptyState, Field, PageHeader, TextInput } from "@/components/admin/ui";
 
 export const Route = createFileRoute("/admin/evangelization")({
   component: EvangelizationAdmin,
 });
+
+type MediaType = "image" | "video";
+
+function detectMediaTypeFromUrl(url: string): MediaType {
+  return /\.(mp4|webm|ogg|mov|m4v)(\?|$)/i.test(url) ? "video" : "image";
+}
 
 function EvangelizationAdmin() {
   const sb = useMemo(() => getSupabase(), []);
   const [rows, setRows] = useState<EvangelizationMediaRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [manualUrl, setManualUrl] = useState("");
+  const [manualAlt, setManualAlt] = useState("");
+  const [manualType, setManualType] = useState<MediaType>("image");
 
   const load = async () => {
     setLoading(true);
@@ -29,6 +38,30 @@ function EvangelizationAdmin() {
     load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const nextSortOrder = () => (rows.length ? Math.max(...rows.map((r) => r.sort_order)) + 1 : 1);
+
+  const addManual = async () => {
+    if (!manualUrl.trim()) return;
+    setError(null);
+    const { error } = await sb
+      .from("evangelization_media")
+      .insert({
+        url: manualUrl.trim(),
+        alt: manualAlt.trim() || null,
+        media_type: manualType,
+        sort_order: nextSortOrder(),
+        visible: true,
+      });
+    if (error) {
+      setError(error.message);
+      return;
+    }
+    setManualUrl("");
+    setManualAlt("");
+    setManualType("image");
+    await load();
+  };
 
   const toggleVisible = async (row: EvangelizationMediaRow) => {
     const { error } = await sb
@@ -71,6 +104,67 @@ function EvangelizationAdmin() {
         title="Evangelización"
         subtitle="Gestioná los items existentes (orden, descripción, visibilidad)."
       />
+
+      <Card className="mb-6">
+        <h2 className="text-sm font-bold text-slate-900">Agregar por URL</h2>
+        <p className="mt-1 text-xs text-slate-500">
+          Pegá la ruta de un archivo existente (ej: <code>/evangelizacion/foto.jpg</code>) o una URL completa.
+        </p>
+        <div className="mt-3 grid gap-3 sm:grid-cols-[1fr_1fr_220px_auto]">
+          <Field label="URL">
+            <TextInput
+              placeholder="https://… o /evangelizacion/foto.jpg"
+              value={manualUrl}
+              onChange={(e) => {
+                const v = e.target.value;
+                setManualUrl(v);
+                setManualType(detectMediaTypeFromUrl(v));
+              }}
+            />
+          </Field>
+          <Field label="Descripción (opcional)" hint="Si la dejás vacía, no se mostrará en el sitio">
+            <TextInput
+              placeholder="Bautismo de Pedro"
+              value={manualAlt}
+              onChange={(e) => setManualAlt(e.target.value)}
+            />
+          </Field>
+          <Field label="Tipo">
+            <div className="inline-flex h-10 w-full items-center rounded-lg border border-slate-300 bg-slate-100 p-1 shadow-sm">
+              <button
+                type="button"
+                onClick={() => setManualType("image")}
+                className={`flex flex-1 items-center justify-center gap-1.5 rounded-md px-3 text-xs font-semibold transition-all h-full ${
+                  manualType === "image"
+                    ? "bg-white text-deep-blue shadow-sm"
+                    : "text-slate-500 hover:text-slate-700"
+                }`}
+              >
+                <ImageIcon className="h-3.5 w-3.5" />
+                Imagen
+              </button>
+              <button
+                type="button"
+                onClick={() => setManualType("video")}
+                className={`flex flex-1 items-center justify-center gap-1.5 rounded-md px-3 text-xs font-semibold transition-all h-full ${
+                  manualType === "video"
+                    ? "bg-white text-deep-blue shadow-sm"
+                    : "text-slate-500 hover:text-slate-700"
+                }`}
+              >
+                <VideoIcon className="h-3.5 w-3.5" />
+                Video
+              </button>
+            </div>
+          </Field>
+          <div className="self-end">
+            <Button onClick={addManual} disabled={!manualUrl.trim()}>
+              <Upload className="h-4 w-4" />
+              Agregar
+            </Button>
+          </div>
+        </div>
+      </Card>
 
       {error && (
         <Card className="mb-4 border-rose-200 bg-rose-50 text-sm text-rose-700">{error}</Card>
