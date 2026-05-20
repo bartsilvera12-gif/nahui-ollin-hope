@@ -225,7 +225,10 @@ function ReferenceLettersAdmin() {
                       muted
                       playsInline
                       preload="metadata"
-                      className="h-full w-full object-cover"
+                      onLoadedMetadata={(e) => {
+                        try { e.currentTarget.currentTime = 0.1; } catch {}
+                      }}
+                      className="h-full w-full object-cover bg-slate-200"
                     />
                     <div className="absolute inset-0 flex items-center justify-center bg-black/20">
                       <div className="h-10 w-10 rounded-full bg-white/90 flex items-center justify-center shadow">
