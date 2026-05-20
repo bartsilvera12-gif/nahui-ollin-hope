@@ -1,24 +1,49 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronLeft, ChevronRight, Play } from "lucide-react";
+import { getSupabase, supabaseConfigured, type GalleryImageRow } from "@/lib/supabase";
 import { galleryItems } from "@/data/site";
 import { SectionTitle } from "./SectionTitle";
 
+const staticItems: GalleryImageRow[] = galleryItems.map((m, i) => ({
+  id: `static-${i}`,
+  url: m.src,
+  alt: null,
+  media_type: m.type,
+  sort_order: i,
+  visible: true,
+  created_at: "",
+}));
+
 export function Gallery() {
+  const [items, setItems] = useState<GalleryImageRow[]>(staticItems);
   const [open, setOpen] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (!supabaseConfigured) return;
+    const sb = getSupabase();
+    sb.from("gallery_images")
+      .select("*")
+      .eq("visible", true)
+      .order("sort_order", { ascending: true })
+      .then(({ data }) => {
+        const rows = (data ?? []) as GalleryImageRow[];
+        if (rows.length > 0) setItems(rows);
+      });
+  }, []);
 
   useEffect(() => {
     if (open === null) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setOpen(null);
-      if (e.key === "ArrowRight") setOpen((i) => ((i! + 1) % galleryItems.length));
-      if (e.key === "ArrowLeft") setOpen((i) => ((i! - 1 + galleryItems.length) % galleryItems.length));
+      if (e.key === "ArrowRight") setOpen((i) => ((i! + 1) % items.length));
+      if (e.key === "ArrowLeft") setOpen((i) => ((i! - 1 + items.length) % items.length));
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [open]);
+  }, [open, items.length]);
 
-  const current = open !== null ? galleryItems[open] : null;
+  const current = open !== null ? items[open] : null;
 
   return (
     <section className="py-20 md:py-28 bg-background">
@@ -29,9 +54,9 @@ export function Gallery() {
           subtitle="Imágenes que representan la fuerza de la comunidad cuando se une para ayudar."
         />
         <div className="mt-12 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 [grid-auto-flow:dense]">
-          {galleryItems.map((item, i) => (
+          {items.map((item, i) => (
             <motion.button
-              key={item.src}
+              key={item.id}
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
@@ -40,20 +65,19 @@ export function Gallery() {
               className={`group relative overflow-hidden rounded-2xl shadow-soft focus:outline-none focus:ring-2 focus:ring-turquoise ${
                 i % 5 === 0 ? "row-span-2 aspect-[3/4]" : "aspect-square"
               }`}
-              aria-label={item.type === "video" ? `Ver video ${i + 1}` : `Ver imagen ${i + 1}`}
+              aria-label={item.media_type === "video" ? `Ver video ${i + 1}` : `Ver imagen ${i + 1}`}
             >
-              {item.type === "image" ? (
+              {item.media_type === "image" ? (
                 <img
-                  src={item.src}
-                  alt={`Galería Nahui Ollin ${i + 1}`}
+                  src={item.url}
+                  alt={item.alt ?? `Galería Nahui Ollin ${i + 1}`}
                   loading="lazy"
                   className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-700"
                 />
               ) : (
                 <>
                   <video
-                    src={item.src}
-                    poster={item.poster}
+                    src={item.url}
                     muted
                     playsInline
                     preload="metadata"
@@ -67,6 +91,13 @@ export function Gallery() {
                 </>
               )}
               <div className="absolute inset-0 bg-gradient-to-t from-deep-blue/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+              {item.alt && item.alt.trim() && (
+                <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 via-black/40 to-transparent px-3 pt-8 pb-2 text-left">
+                  <p className="line-clamp-2 text-xs md:text-sm font-medium text-white drop-shadow">
+                    {item.alt}
+                  </p>
+                </div>
+              )}
             </motion.button>
           ))}
         </div>
@@ -92,26 +123,26 @@ export function Gallery() {
             </button>
             <button
               aria-label="Anterior"
-              onClick={(e) => { e.stopPropagation(); setOpen((i) => ((i! - 1 + galleryItems.length) % galleryItems.length)); }}
+              onClick={(e) => { e.stopPropagation(); setOpen((i) => ((i! - 1 + items.length) % items.length)); }}
               className="absolute left-3 md:left-8 h-12 w-12 rounded-full bg-white/15 hover:bg-white/25 text-white flex items-center justify-center"
             >
               <ChevronLeft className="h-6 w-6" />
             </button>
             <button
               aria-label="Siguiente"
-              onClick={(e) => { e.stopPropagation(); setOpen((i) => ((i! + 1) % galleryItems.length)); }}
+              onClick={(e) => { e.stopPropagation(); setOpen((i) => ((i! + 1) % items.length)); }}
               className="absolute right-3 md:right-8 h-12 w-12 rounded-full bg-white/15 hover:bg-white/25 text-white flex items-center justify-center"
             >
               <ChevronRight className="h-6 w-6" />
             </button>
-            {current.type === "image" ? (
+            {current.media_type === "image" ? (
               <motion.img
                 key={open}
                 initial={{ opacity: 0, scale: 0.96 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0 }}
-                src={current.src}
-                alt="Imagen ampliada"
+                src={current.url}
+                alt={current.alt ?? "Imagen ampliada"}
                 onClick={(e) => e.stopPropagation()}
                 className="max-h-[88vh] max-w-[92vw] rounded-2xl shadow-glow object-contain"
               />
@@ -121,13 +152,21 @@ export function Gallery() {
                 initial={{ opacity: 0, scale: 0.96 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0 }}
-                src={current.src}
+                src={current.url}
                 controls
                 autoPlay
                 playsInline
                 onClick={(e) => e.stopPropagation()}
                 className="max-h-[88vh] max-w-[92vw] rounded-2xl shadow-glow bg-black"
               />
+            )}
+            {current.alt && current.alt.trim() && (
+              <div
+                className="pointer-events-none absolute bottom-6 left-1/2 -translate-x-1/2 max-w-[80vw] rounded-lg bg-black/60 px-4 py-2 text-center text-sm text-white backdrop-blur-sm"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {current.alt}
+              </div>
             )}
           </motion.div>
         )}

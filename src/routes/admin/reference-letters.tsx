@@ -25,6 +25,7 @@ function ReferenceLettersAdmin() {
   const [error, setError] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
   const [manualUrl, setManualUrl] = useState("");
+  const [manualAlt, setManualAlt] = useState("");
   const [manualType, setManualType] = useState<MediaType>("image");
   const fileRef = useRef<HTMLInputElement>(null);
 
@@ -75,8 +76,9 @@ function ReferenceLettersAdmin() {
     if (!manualUrl.trim()) return;
     setError(null);
     try {
-      await insertRow(manualUrl.trim(), null, manualType);
+      await insertRow(manualUrl.trim(), manualAlt.trim() || null, manualType);
       setManualUrl("");
+      setManualAlt("");
       setManualType("image");
       await load();
     } catch (e) {
@@ -97,6 +99,16 @@ function ReferenceLettersAdmin() {
     const { error } = await sb
       .from("reference_letters")
       .update({ sort_order })
+      .eq("id", id);
+    if (error) setError(error.message);
+    else load();
+  };
+
+  const updateAlt = async (id: string, alt: string) => {
+    const next = alt.trim() || null;
+    const { error } = await sb
+      .from("reference_letters")
+      .update({ alt: next })
       .eq("id", id);
     if (error) setError(error.message);
     else load();
@@ -136,7 +148,7 @@ function ReferenceLettersAdmin() {
 
         <div className="mt-6 border-t border-slate-200 pt-4">
           <h3 className="text-sm font-bold text-slate-900">…o agregar por URL</h3>
-          <div className="mt-3 grid gap-3 sm:grid-cols-[1fr_220px_auto]">
+          <div className="mt-3 grid gap-3 sm:grid-cols-[1fr_1fr_220px_auto]">
             <Field label="URL">
               <TextInput
                 placeholder="https://… o /cartas-referenciales/carta-XX.jpg"
@@ -146,6 +158,13 @@ function ReferenceLettersAdmin() {
                   setManualUrl(v);
                   setManualType(detectMediaTypeFromUrl(v));
                 }}
+              />
+            </Field>
+            <Field label="Descripción (opcional)" hint="Si la dejás vacía, no se mostrará en el sitio">
+              <TextInput
+                placeholder="Carta del Padre Juan"
+                value={manualAlt}
+                onChange={(e) => setManualAlt(e.target.value)}
               />
             </Field>
             <Field label="Tipo">
@@ -245,6 +264,17 @@ function ReferenceLettersAdmin() {
                   <Trash2 className="h-4 w-4" />
                 </Button>
               </div>
+              <TextInput
+                key={`alt-${row.id}-${row.alt ?? ""}`}
+                className="mt-2 h-9 text-xs"
+                placeholder="Descripción (vacío = no se muestra)"
+                defaultValue={row.alt ?? ""}
+                onBlur={(e) => {
+                  const next = e.target.value;
+                  if (next !== (row.alt ?? "")) updateAlt(row.id, next);
+                }}
+                title="Texto descriptivo (se guarda al salir del campo)"
+              />
               <p className="mt-1 truncate text-[10px] text-slate-400" title={row.url}>
                 {row.url}
               </p>

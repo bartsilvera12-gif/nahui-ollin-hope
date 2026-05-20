@@ -95,6 +95,13 @@ export function ReferenceLetters() {
                   </>
                 )}
                 <div className="absolute inset-0 bg-gradient-to-t from-deep-blue/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                {item.alt && item.alt.trim() && (
+                  <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 via-black/40 to-transparent px-3 pt-8 pb-2 text-left">
+                    <p className="line-clamp-2 text-xs md:text-sm font-medium text-white drop-shadow">
+                      {item.alt}
+                    </p>
+                  </div>
+                )}
               </motion.button>
             ))}
           </div>
@@ -157,6 +164,14 @@ export function ReferenceLetters() {
                 onClick={(e) => e.stopPropagation()}
                 className="max-h-[88vh] max-w-[92vw] rounded-2xl shadow-glow bg-black"
               />
+            )}
+            {current.alt && current.alt.trim() && (
+              <div
+                className="pointer-events-none absolute bottom-6 left-1/2 -translate-x-1/2 max-w-[80vw] rounded-lg bg-black/60 px-4 py-2 text-center text-sm text-white backdrop-blur-sm"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {current.alt}
+              </div>
             )}
           </motion.div>
         )}
