@@ -1,6 +1,14 @@
 import { Facebook, Phone, Printer } from "lucide-react";
 import logo from "@/assets/logo.png";
-import { DONATION_URL, FACEBOOK_URL, FAX, PHONE_FREE } from "@/data/site";
+import {
+  DONATION_URL,
+  FACEBOOK_URL,
+  FAX,
+  PHONE_FREE,
+  PHONE_FREE_DIGITS,
+  PHONE_FREE_PREFIX,
+  PHONE_FREE_WORD,
+} from "@/data/site";
 
 export function Footer() {
   return (
@@ -33,7 +41,17 @@ export function Footer() {
           <div className="mt-4 space-y-1.5 text-sm text-white/70">
             <div className="flex items-center gap-2">
               <Phone className="h-4 w-4 text-turquoise shrink-0" />
-              <span>Llamada gratis: {PHONE_FREE}</span>
+              <span aria-label={`Llamada gratis: ${PHONE_FREE}`}>
+                <span aria-hidden>
+                  Llamada gratis: {PHONE_FREE_PREFIX}
+                  {/* inline-flex en columna: los digitos quedan centrados bajo
+                      la palabra y la acompanan aunque la linea se corte. */}
+                  <span className="inline-flex flex-col items-center leading-tight">
+                    <span>{PHONE_FREE_WORD}</span>
+                    <span className="text-xs text-white/60">{PHONE_FREE_DIGITS}</span>
+                  </span>
+                </span>
+              </span>
             </div>
             <div className="flex items-center gap-2">
               <Printer className="h-4 w-4 text-turquoise shrink-0" />

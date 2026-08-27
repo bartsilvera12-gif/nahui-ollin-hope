@@ -28,7 +28,7 @@ function Counter({ to, suffix }: { to: number; suffix: string }) {
 
   return (
     <span ref={ref}>
-      {n.toLocaleString("es")}
+      {n.toLocaleString("en-US")}
       {suffix}
     </span>
   );

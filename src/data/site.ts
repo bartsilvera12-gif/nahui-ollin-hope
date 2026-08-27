@@ -15,7 +15,12 @@ export const navLinks = [
 export const WHATSAPP_URL = "https://wa.me/595XXXXXXXXX";
 export const FACEBOOK_URL = "https://www.facebook.com/share/v/1LJBW74MXL/";
 export const FAX = "(214) 416-7771";
-export const PHONE_FREE = "+1 (833) 500";
+// El numero gratuito se muestra en tres piezas para poder ubicar los digitos
+// de "LUPE" justo debajo de la palabra, en cualquier ancho de pantalla.
+export const PHONE_FREE_PREFIX = "+1 (833) 500-";
+export const PHONE_FREE_WORD = "LUPE";
+export const PHONE_FREE_DIGITS = "(5873)";
+export const PHONE_FREE = `${PHONE_FREE_PREFIX}${PHONE_FREE_WORD} ${PHONE_FREE_DIGITS}`;
 
 export const aboutContent = {
   quienesSomos: [
@@ -82,9 +87,9 @@ export const values = [
 
 export const impactStats = [
   { icon: "Smile", value: 250, suffix: "+", label: "Niños acompañados" },
-  { icon: "CalendarHeart", value: 40, suffix: "+", label: "Jornadas solidarias" },
+  { icon: "CalendarHeart", value: 400, suffix: "+", label: "Jornadas solidarias" },
   { icon: "Users", value: 60, suffix: "+", label: "Voluntarios activos" },
-  { icon: "Utensils", value: 1500, suffix: "+", label: "Alimentos entregados" },
+  { icon: "Utensils", value: 15000, suffix: "+", label: "Alimentos entregados" },
 ];
 
 export const actions = [
